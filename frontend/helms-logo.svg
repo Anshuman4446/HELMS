@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 145" role="img" aria-labelledby="title desc">
+<title id="title">HELMS</title><desc id="desc">Helmet Emergency and Monitoring System</desc>
+<path d="M56 53C81 11 145 4 207 22" fill="none" stroke="#f1263e" stroke-width="8" stroke-linecap="round"/>
+<path d="M24 76l9-5 1-10 8 6 10-3-4 9 6 8-10-1-7 7-2-10z" fill="#f1263e"/>
+<path d="M31 76l7-6-1 7 9-3-8 8-2-7z" fill="#12202a"/>
+<text x="65" y="94" fill="#12202a" font-family="Arial Black,Arial,sans-serif" font-size="80" font-style="italic" font-weight="900" letter-spacing="-6">HELMS</text>
+<text x="89" y="128" fill="#253744" font-family="Arial,Helvetica,sans-serif" font-size="17" font-style="italic" font-weight="600" letter-spacing=".15">(Helmet Emergency &amp; Monitoring System)</text>
+</svg>

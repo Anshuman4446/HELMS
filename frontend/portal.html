@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HELMS — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --navy:#0F2A4A; --navy-dark:#0A1D33; --gold:#C99A2E; --bg:#F3F5F8; --line:#E1E6ED; --muted:#5B6B7D; }
+  *{box-sizing:border-box;}
+  body{margin:0; min-height:100vh; background:var(--bg); font-family:'IBM Plex Sans',sans-serif; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .wrap{max-width:760px; width:100%; text-align:center;}
+  .brand-logo{display:block;width:min(270px,80vw);height:auto;margin:0 auto 16px;}
+  .seal{width:52px; height:52px; border-radius:50%; background:var(--navy); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin:0 auto 16px;}
+  h1{font-size:1.5rem; color:var(--navy); margin:0 0 6px;}
+  p.sub{color:var(--muted); margin:0 0 36px; font-size:0.95rem;}
+  .cards{display:grid; grid-template-columns:minmax(260px,420px); justify-content:center; gap:20px;}
+  @media(max-width:600px){ .cards{grid-template-columns:1fr;} }
+  .card{background:#fff; border:1px solid var(--line); border-radius:12px; padding:28px 22px; text-decoration:none; color:inherit; transition:box-shadow .15s, border-color .15s;}
+  .card:hover{border-color:var(--navy); box-shadow:0 4px 16px rgba(15,42,74,.08);}
+  .card .icon{font-size:2rem; margin-bottom:12px;}
+  .card h2{font-size:1.1rem; margin:0 0 8px; color:var(--navy);}
+  .card p{font-size:0.85rem; color:var(--muted); margin:0;}
+  footer{margin-top:32px; font-size:0.72rem; color:#A8B0BA; font-family:'IBM Plex Mono',monospace;}
+</style>
+<script src="brand-migration.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <img class="brand-logo" src="helms-logo.svg" alt="HELMS — Helmet Emergency &amp; Monitoring System">
+  <h1>HELMS Access Portal</h1>
+  <p class="sub">Sign in to your Helmet rider account.</p>
+  <div class="cards">
+    <a class="card" href="rider-portal.html">
+      <div class="icon">🪖</div>
+      <h2>Rider</h2>
+      <p>Set up your helmet profile and emergency contacts, or view your alerts.</p>
+    </a>
+  </div>
+  <footer>HELMS RIDER ACCESS</footer>
+</div>
+</body>
+</html>
+
