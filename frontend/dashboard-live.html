@@ -662,3 +662,668 @@ setInterval(pollAlerts, 1000);
 </html>
 
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>HELMS Dispatch Authority</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<style>
+  :root{
+    --navy:#0F2A4A; --navy-dark:#0A1D33; --gold:#C99A2E;
+    --bg:#F3F5F8; --panel:#FFFFFF; --line:#E1E6ED;
+    --text:#1B2733; --muted:#5B6B7D; --muted2:#8C9AAA;
+    --red:#B3261E; --amber:#B4790E; --green:#1E7A4C; --grey:#6B7684;
+    --red-bg:#FCEAE9; --amber-bg:#FCF2DF; --green-bg:#E8F5EE; --grey-bg:#EEF0F3;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; min-height:100vh;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  .header{background:var(--navy); color:#EAF0F7; border-bottom:3px solid var(--gold);}
+  .header-top{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; flex-wrap:wrap; gap:10px;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-logo-light{display:block;width:185px;height:auto;}
+  .seal{width:38px; height:38px; border-radius:50%; background:var(--navy-dark); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.15rem;}
+  .brand-text h1{font-size:1.02rem; font-weight:600; margin:0; letter-spacing:.01em;}
+  .brand-text span{font-size:0.7rem; color:#9FB3C8; font-family:'IBM Plex Mono',monospace; letter-spacing:.03em;}
+  .header-right{display:flex; align-items:center; gap:14px;}
+  .status-pill{display:flex; align-items:center; gap:7px; font-size:0.75rem; font-family:'IBM Plex Mono',monospace; color:#CBD9E8; background:rgba(255,255,255,.06); padding:6px 12px; border-radius:16px;}
+  .dot{width:7px; height:7px; border-radius:50%; background:#3FCE86;}
+  .dot.off{background:var(--red);}
+  .sound-toggle{border:1px solid rgba(255,255,255,.25); border-radius:16px; padding:6px 14px; background:transparent; color:#EAF0F7; font:600 .72rem 'IBM Plex Sans',sans-serif; cursor:pointer;}
+  .sound-toggle.on{border-color:#3FCE86; color:#3FCE86;}
+  .subbar{background:var(--navy-dark); padding:6px 24px; font-size:0.68rem; color:#8AA0B6; font-family:'IBM Plex Mono',monospace; letter-spacing:.03em;}
+
+  @keyframes flashHeader{0%{background:#4A1614;} 100%{background:var(--navy);}}
+  .header.flash{animation:flashHeader 1.1s ease-out;}
+
+  .layout{display:grid; grid-template-columns:300px 1fr 320px; gap:16px; padding:16px; align-items:start;}
+  @media (max-width:960px){.layout{grid-template-columns:1fr;}}
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:16px; box-shadow:0 1px 2px rgba(15,42,74,.04);}
+  .panel h2{font-size:0.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 12px 0; font-weight:600; border-bottom:1px solid var(--line); padding-bottom:9px;}
+  .server-box{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; color:var(--muted2); margin-bottom:12px; padding:7px 9px; background:var(--grey-bg); border-radius:6px;}
+
+  .queue-item{border:1px solid var(--line); border-radius:8px; padding:11px 12px; margin-bottom:8px; cursor:pointer; transition:border-color .15s, box-shadow .15s;}
+  .queue-item:hover{border-color:var(--navy); box-shadow:0 1px 4px rgba(15,42,74,.08);}
+  .queue-item.active{border-color:var(--navy); background:#F7F9FC;}
+  .qi-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;}
+  .qi-id{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--muted); font-weight:600;}
+  .badge{font-size:0.65rem; font-weight:600; padding:3px 9px; border-radius:10px; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.02em;}
+  .badge.pending{background:var(--red-bg); color:var(--red);}
+  .badge.dispatched{background:var(--green-bg); color:var(--green);}
+  .badge.cancelled{background:var(--grey-bg); color:var(--grey);}
+  .badge.completed{background:var(--green-bg); color:var(--green);}
+  .qi-zone{font-size:0.82rem; font-weight:500;}
+  .qi-time{font-size:0.7rem; color:var(--muted2); font-family:'IBM Plex Mono',monospace; margin-top:2px;}
+  .empty{color:var(--muted2); font-size:0.8rem; padding:24px 0; text-align:center;}
+
+  #mapEl{width:100%; height:540px; border-radius:8px; border:1px solid var(--line);}
+  .map-caption{font-size:0.7rem; color:var(--muted2); margin-top:8px; font-family:'IBM Plex Mono',monospace; line-height:1.5;}
+  .map-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;color:var(--muted);font-size:.7rem;}
+  .map-legend span{display:flex;align-items:center;gap:6px;}
+  .legend-chip{width:13px;height:13px;border-radius:50%;display:inline-grid;place-items:center;color:#fff;font:bold 8px 'IBM Plex Mono',monospace;}
+
+  .detail-row{margin-bottom:13px;}
+  .detail-label{font-size:0.66rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted2); font-family:'IBM Plex Mono',monospace; margin-bottom:3px;}
+  .detail-val{font-size:0.92rem;}
+  .detail-val.mono{font-family:'IBM Plex Mono',monospace; font-size:0.83rem;}
+  .detail-empty{color:var(--muted2); font-size:0.85rem; line-height:1.6;}
+  .lock-note{font-size:0.75rem; color:var(--amber); background:var(--amber-bg); padding:8px 10px; border-radius:6px; margin:8px 0 4px;}
+  .lock-note.ok{color:var(--green); background:var(--green-bg);}
+  .lock-note.off{color:var(--grey); background:var(--grey-bg);}
+  .actions{margin-top:10px;}
+  .actbtn{width:100%; padding:10px; border-radius:7px; font-size:0.82rem; font-weight:600; cursor:pointer; border:1px solid var(--navy); background:var(--navy); color:#fff;}
+  .actbtn:hover{background:var(--navy-dark);}
+
+  .leaflet-popup-content-wrapper{border-radius:8px;}
+  .popup-title{font-weight:700; margin-bottom:4px; color:var(--navy);}
+  .popup-row{font-size:0.76rem; color:var(--muted); font-family:'IBM Plex Mono',monospace;}
+  .subbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .subbar-action,.clear-pins{border:1px solid #8aa0b6;border-radius:6px;padding:6px 10px;background:transparent;color:#eaf0f7;font:600 .68rem 'IBM Plex Sans',sans-serif;cursor:pointer;}
+  .subbar-action:hover{background:#ffffff12;}
+  .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+  .panel-heading h2{margin:0;flex:1;}
+  .clear-pins{border-color:var(--line);color:var(--navy);background:#fff;white-space:nowrap;}
+  .clear-pins:disabled{opacity:.5;cursor:default;}
+  .history-view{margin:16px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;}
+  .history-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .history-top h2{margin:0;font-size:1rem;color:var(--navy);}
+  .history-back{border:1px solid var(--navy);border-radius:7px;padding:8px 12px;background:var(--navy);color:#fff;font:600 .78rem 'IBM Plex Sans',sans-serif;cursor:pointer;}
+  .history-summary{font-size:.75rem;color:var(--muted);margin-bottom:10px;}
+  .history-table-wrap{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:8px;}
+  .history-table{width:100%;border-collapse:collapse;font-size:.76rem;}
+  .history-table th,.history-table td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+  .history-table th{position:sticky;top:0;background:#f6f8fa;color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;}
+  .history-table tr[data-alert-id]{cursor:pointer;}
+  .history-table tr[data-alert-id]:hover{background:#f5f8fb;}
+  .hidden{display:none!important;}
+</style>
+<script src="brand-migration.js"></script>
+</head>
+<body>
+
+<div class="header" id="headerBar">
+  <div class="header-top">
+    <div class="brand"><img class="brand-logo-light" src="helms-logo-light.svg" alt="HELMS — Helmet Emergency &amp; Monitoring System"><span class="brand-text"><span>DISPATCH AUTHORITY</span></span></div>
+    <div class="header-right">
+      <button id="serviceLogout" class="sound-toggle" type="button">Sign out</button>
+      <a class="sound-toggle" style="display:inline-block;text-decoration:none" href="police-dashboard.html">Police coordination</a>
+      <button id="soundToggle" class="sound-toggle on" type="button">🔔 Sound On</button>
+      <div class="status-pill"><span class="dot" id="connDot"></span><span id="connText">Connecting…</span></div>
+    </div>
+  </div>
+  <div class="subbar"><span>RIDER CANCEL WINDOW · STAFF REVIEW · EMERGENCY RESPONSE</span><button class="subbar-action" id="showHistory" type="button">All Rider Crash History</button></div>
+</div>
+
+<div class="layout">
+  <div class="panel">
+    <h2>Active Queue · Recent 5</h2>
+    <div class="server-box" id="backendText">Connecting to dispatch backend… · routes and estimated travel times use OpenStreetMap road data</div>
+    <div id="queueList"><div class="empty">Waiting for connection…</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-heading"><h2>Incident Map</h2><button class="clear-pins" id="clearCancelledPins" type="button" disabled>Clear cancelled pins</button></div>
+    <div id="mapEl"></div>
+    <div class="map-legend"><span><i class="legend-chip" style="background:#C62828">A</i>Ambulance base</span><span><i class="legend-chip" style="background:#1456A0">P</i>Police base</span><span><i class="legend-chip" style="background:#C62828">✚</i>Ambulance unit</span><span><i class="legend-chip" style="background:#1456A0">🚓</i>Police unit</span></div>
+    <div class="map-caption">Nearby police stations and emergency medical facilities are shown around each incident. Map routes and estimated response times update with the selected incident.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Incident Detail</h2>
+    <div id="detailBody"><div class="detail-empty">New incidents reach this desk after the Helmet User’s 45-second response window. Review the details, call to confirm their status, then dispatch or cancel as appropriate.</div></div>
+  </div>
+</div>
+
+<section id="historyView" class="history-view hidden" aria-label="All rider crash history">
+  <div class="history-top"><h2>All Rider Crash History</h2><button class="history-back" id="backToLive" type="button">Back to Live Dispatch</button></div>
+  <div id="historySummary" class="history-summary">Loading records…</div>
+  <div class="history-table-wrap"><table class="history-table"><thead><tr><th>Detected</th><th>Rider</th><th>Helmet ID</th><th>Location</th><th>Status</th></tr></thead><tbody id="historyRows"></tbody></table></div>
+</section>
+
+<script>
+const serviceParams = new URLSearchParams(location.search);
+const SERVER = (serviceParams.get('api') || (location.hostname ? 'http://' + location.hostname + ':3000' : sessionStorage.getItem('helms-service-api') || localStorage.getItem('helms-service-api') || 'http://172.27.230.228:3000')).replace(/\/$/, '');
+const SERVICE_TOKEN = sessionStorage.getItem('helms-service-token') || '';
+function serviceHeaders(extra={}){return {'x-service-session':SERVICE_TOKEN,...extra};}
+if(sessionStorage.getItem('helms-service-auth') !== 'true' || !SERVICE_TOKEN){ window.location.replace('service-login.html?api=' + encodeURIComponent(SERVER)); }
+document.getElementById('backendText').textContent = `Backend: ${SERVER.replace(/^https?:\/\//, '')} · road routing uses OpenStreetMap data`;
+document.getElementById('serviceLogout').addEventListener('click',()=>{sessionStorage.removeItem('helms-service-auth');location.replace('service-login.html?api='+encodeURIComponent(SERVER));});
+let alerts = [];
+let selectedId = null;
+let knownAlertIds = null;
+let soundOn = true;
+let audioCtx = null;
+
+// ---------- Map setup ----------
+const map = L.map('mapEl', { zoomControl: true }).setView([18.5205, 73.8565], 12);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 18,
+}).addTo(map);
+
+const markers = {};
+const stationLayer = L.layerGroup().addTo(map);
+const responseLayer = L.layerGroup().addTo(map);
+const responses = {};
+const stationMarkers = new Set();
+let historyMode = false;
+const facilityCache = new Map();
+let hospitalFleetCache={at:0,data:null};
+async function loadHospitalFleet(){if(hospitalFleetCache.data&&Date.now()-hospitalFleetCache.at<10000)return hospitalFleetCache.data;const response=await fetch(SERVER+'/dispatch/hospital-ambulances',{headers:serviceHeaders()});if(!response.ok)throw new Error(response.status===401?'Authority session expired. Sign in again.':'Could not load hospital ambulance availability.');const data=await response.json();hospitalFleetCache={at:Date.now(),data};return data;}
+const OVERPASS = 'https://overpass-api.de/api/interpreter';
+const ROUTER_HOST = 'https://router.project-osrm.org';
+const FACILITY_RADIUS_METERS = 25000;
+const TURNOUT_SECONDS = 60;
+const responderStyles = {
+  ambulance:{ color:'#C62828', label:'A', title:'Ambulance' },
+  police:{ color:'#1456A0', label:'P', title:'Police' },
+};
+function escapeHtml(value){ return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])); }
+function addStationMarker(base,kind){
+  const key=base.hospitalId?`${kind}:${base.hospitalId}:${base.unitId}`:`${kind}:${base.osmType}:${base.osmId}`;
+  if(stationMarkers.has(key)) return;
+  stationMarkers.add(key);
+  const style=responderStyles[kind];
+  const icon=L.divIcon({className:'',html:`<div style="width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:${style.color};color:#fff;border:2px solid #fff;box-shadow:0 1px 5px #3338;font:bold 11px 'IBM Plex Mono',monospace">${style.label}</div>`,iconSize:[27,27],iconAnchor:[13,13]});
+  const role=base.hospitalId?`Available hospital ambulance · ${base.unitId}`:(base.simulated?'Mapped simulated medical response location':`${style.title} station`);
+  L.marker([base.lat,base.lng],{icon}).bindPopup(`<b>${role}</b><br>${escapeHtml(base.hospitalName||base.name)}`).addTo(stationLayer);
+}
+function markerColor(status){
+  return status==='pending' ? '#B3261E' : (status==='dispatched' || status==='completed' ? '#1E7A4C' : '#8C9AAA');
+}
+function makeIcon(status){
+  return L.divIcon({
+    className: '',
+    html: `<div style="width:16px;height:16px;border-radius:50%;background:${markerColor(status)};border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);"></div>`,
+    iconSize: [16,16], iconAnchor: [8,8],
+  });
+}
+function popupHtml(a){
+  return `
+    <div class="popup-title">${a.id} — Crash Detected</div>
+    <div class="popup-row">Helmet User ID: ${a.riderId}</div>
+    <div class="popup-row">${a.location || a.zone}</div>
+    <div class="popup-row">Status: ${a.status}</div>
+    <div class="popup-row">${fmtTime(a.time)}</div>
+  `;
+}
+function syncMarkers(){
+  const seen = new Set();
+  alerts.forEach(a=>{
+    seen.add(a.id);
+    const expiredCancelledPin = a.status==='cancelled' && a.cancelledPinExpiresAt && Date.now() >= Date.parse(a.cancelledPinExpiresAt);
+    if(a.status==='completed' || (a.status==='cancelled' && (a.hideCancelledDot || expiredCancelledPin))){
+      if(markers[a.id] && map.hasLayer(markers[a.id])) map.removeLayer(markers[a.id]);
+      return;
+    }
+    if(markers[a.id]){
+      markers[a.id].setIcon(makeIcon(a.status));
+      markers[a.id].setPopupContent(popupHtml(a));
+    } else {
+      const m = L.marker([a.lat, a.lng], { icon: makeIcon(a.status) }).addTo(map);
+      m.bindPopup(popupHtml(a));
+      m.on('click', ()=>{ selectedId=a.id; renderQueue(); renderDetail(a); });
+      markers[a.id] = m;
+    }
+  });
+  Object.keys(markers).forEach(id=>{
+    if(!seen.has(id)){ map.removeLayer(markers[id]); delete markers[id]; }
+  });
+  refreshCancelledPinButton();
+}
+
+function refreshCancelledPinButton(){
+  const button=document.getElementById('clearCancelledPins');
+  if(!button) return;
+  const count=alerts.filter(a=>a.status==='cancelled'&&!a.hideCancelledDot&&(!a.cancelledPinExpiresAt||Date.now()<Date.parse(a.cancelledPinExpiresAt))).length;
+  button.disabled=count===0;
+  button.textContent=`Clear cancelled pins${count?` (${count})`:''}`;
+}
+async function clearCancelledPins(){
+  const pins=alerts.filter(a=>a.status==='cancelled'&&!a.hideCancelledDot&&(!a.cancelledPinExpiresAt||Date.now()<Date.parse(a.cancelledPinExpiresAt)));
+  if(!pins.length) return;
+  await Promise.all(pins.map(async a=>{
+    const response=await fetch(SERVER+'/alerts/'+encodeURIComponent(a.id),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({hideCancelledDot:true})});
+    if(response.ok) a.hideCancelledDot=true;
+  }));
+  syncMarkers();
+  renderAllHistory();
+}
+
+function metersBetween(a,b){
+  const radians=value=>value*Math.PI/180, earth=6371000;
+  const dLat=radians(b[1]-a[1]), dLng=radians(b[0]-a[0]);
+  const h=Math.sin(dLat/2)**2+Math.cos(radians(a[1]))*Math.cos(radians(b[1]))*Math.sin(dLng/2)**2;
+  return 2*earth*Math.asin(Math.sqrt(h));
+}
+function cacheKeyForIncident(incident){ return `${Number(incident.lat).toFixed(3)},${Number(incident.lng??incident.lon).toFixed(3)}`; }
+async function fetchWithTimeout(url,options={},timeoutMs=15000){
+  const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{return await fetch(url,{...options,signal:controller.signal});}
+  finally{clearTimeout(timer);}
+}
+async function discoverNearbyFacilities(incident,radius=FACILITY_RADIUS_METERS){
+  const key=`${cacheKeyForIncident(incident)}:${radius}`, cached=facilityCache.get(key);
+  if(cached&&cached.expires>Date.now()) return cached.facilities;
+  const lat=Number(incident.lat), lng=Number(incident.lng??incident.lon);
+  const query=`[out:json][timeout:10];(nwr(around:${radius},${lat},${lng})["amenity"="police"];nwr(around:${radius},${lat},${lng})["emergency"="ambulance_station"];nwr(around:${radius},${lat},${lng})["amenity"="ambulance_station"];nwr(around:${radius},${lat},${lng})["amenity"="hospital"];);out center tags;`;
+  const response=await fetchWithTimeout(OVERPASS,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(query)});
+  if(!response.ok) throw new Error('Nearby facility lookup returned '+response.status);
+  const data=await response.json();
+  const facilities=[], seen=new Set();
+  for(const element of data.elements||[]){
+    const tags=element.tags||{}, point=element.center||element;
+    if(!Number.isFinite(point.lat)||!Number.isFinite(point.lon)) continue;
+    const isPolice=tags.amenity==='police';
+    const isAmbulanceStation=tags.emergency==='ambulance_station'||tags.amenity==='ambulance_station';
+    const isHospital=tags.amenity==='hospital';
+    if(!isPolice&&!isAmbulanceStation&&!isHospital) continue;
+    const keyForFeature=`${element.type}/${element.id}`;
+    if(seen.has(keyForFeature)) continue;
+    seen.add(keyForFeature);
+    facilities.push({osmType:element.type,osmId:element.id,name:tags.name||tags.operator||`Unnamed ${isPolice?'police station':isAmbulanceStation?'ambulance station':'hospital'}`,lat:Number(point.lat),lng:Number(point.lon),kind:isPolice?'police':'ambulance',facilityType:isPolice?'police station':isAmbulanceStation?'ambulance station':'hospital',simulated:isHospital&&!isAmbulanceStation});
+  }
+  // Include hospitals as clearly labeled simulated ambulance staging points;
+  // mapped ambulance depots can be sparse, and a closer hospital may be the
+  // best local stand-in for this prototype.
+  const usable=facilities.filter(item=>item.kind==='police'||item.kind==='ambulance');
+  const bySpot=new Set();
+  const deduped=usable.filter(item=>{
+    const spot=`${item.kind}:${item.lat.toFixed(4)}:${item.lng.toFixed(4)}`;
+    if(bySpot.has(spot)) return false;
+    bySpot.add(spot); return true;
+  });
+  if(deduped.length) facilityCache.set(key,{expires:Date.now()+60*1000,facilities:deduped});
+  return deduped;
+}
+async function drivingTimesToIncident(facilities,incident){
+  const lat=Number(incident.lat), lng=Number(incident.lng??incident.lon);
+  const ranked=[];
+  // Keep every discovered facility in consideration while staying under the
+  // routing service's practical per-request coordinate limit.
+  for(let start=0;start<facilities.length;start+=90){
+    const batch=facilities.slice(start,start+90);
+    const coords=[...batch.map(place=>`${place.lng},${place.lat}`),`${lng},${lat}`].join(';');
+    const sourceIndexes=batch.map((_,index)=>index).join(';');
+    const destinationIndex=batch.length;
+    const url=`${ROUTER_HOST}/table/v1/driving/${coords}?sources=${sourceIndexes}&destinations=${destinationIndex}&annotations=duration,distance`;
+    const response=await fetchWithTimeout(url);
+    if(!response.ok) throw new Error('Road-time lookup returned '+response.status);
+    const data=await response.json();
+    if(data.code!=='Ok'||!Array.isArray(data.durations)) throw new Error('Could not compare road arrival times');
+    batch.forEach((facility,index)=>ranked.push({...facility,driveSeconds:data.durations[index]?.[0],driveMeters:data.distances?.[index]?.[0]}));
+  }
+  return ranked;
+}
+// Once the fastest nearby mapped station is selected, get its detailed road geometry.
+async function fetchRoadRoute(base, incident){
+  const coords=`${base.lng},${base.lat};${Number(incident.lng ?? incident.lon)},${Number(incident.lat)}`;
+  const url=`${ROUTER_HOST}/route/v1/driving/${coords}?overview=full&geometries=geojson&steps=true`;
+  const response=await fetchWithTimeout(url);
+  if(!response.ok) throw new Error('Routing service returned '+response.status);
+  const data=await response.json();
+  if(data.code!=='Ok'||!data.routes?.length) throw new Error('No road route found from '+base.name);
+  return {...base,route:data.routes[0]};
+}
+function makeUnitIcon(kind){
+  const style=responderStyles[kind];
+  return L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:${style.color};color:white;border:2px solid white;box-shadow:0 2px 8px #1117;font-size:17px">${kind==='ambulance'?'✚':'🚓'}</div>`,iconSize:[30,30],iconAnchor:[15,15]});
+}
+function etaText(seconds){
+  if(seconds<=0) return 'Arrived';
+  const mins=Math.ceil(seconds/60);
+  return mins<60 ? `~${mins} min` : `~${Math.floor(mins/60)} hr ${mins%60} min`;
+}
+function routeStreetNames(route){
+  const names=[...new Set((route.legs||[]).flatMap(leg=>(leg.steps||[]).map(step=>step.name).filter(Boolean)))];
+  return names.slice(0,3).map(escapeHtml).join(' → ') || 'Mapped road route';
+}
+function metersBetween(a,b){
+  const radians=value=>value*Math.PI/180, earth=6371000;
+  const dLat=radians(b[1]-a[1]), dLng=radians(b[0]-a[0]);
+  const h=Math.sin(dLat/2)**2+Math.cos(radians(a[1]))*Math.cos(radians(b[1]))*Math.sin(dLng/2)**2;
+  return 2*earth*Math.asin(Math.sqrt(h));
+}
+function routeCumulativeMeters(coords){
+  const distances=[0];
+  for(let i=1;i<coords.length;i++) distances.push(distances[i-1]+metersBetween(coords[i-1],coords[i]));
+  return distances;
+}
+const MAX_FACILITY_SEARCH_RADIUS_METERS=200000;
+function scheduleResponseRetry(record){
+  if(record.retryTimer) return;
+  const delay=Math.min(300000,15000*2**Math.min(record.retryAttempt||0,5));
+  record.retryAttempt=(record.retryAttempt||0)+1;
+  record.nextRetryAt=Date.now()+delay;
+  record.retryTimer=setTimeout(()=>{
+    record.retryTimer=null;
+    const incident=alerts.find(item=>item.id===record.incident.id&&item.status==='dispatched');
+    if(incident) prepareResponse(incident);
+  },delay);
+}
+async function prepareResponse(a){
+  let record=responses[a.id];
+  if(record?.inFlight||record?.retryTimer||record?.state==='ready') return;
+  if(!record){
+    record={state:'loading',units:[],incident:a,dispatchAt:Date.parse(a.statusChangedAt)||Date.now(),retryAttempt:0,searchRadius:FACILITY_RADIUS_METERS};
+    responses[a.id]=record;
+  }
+  record.inFlight=true;
+  record.state='loading';
+  record.units.forEach(unit=>{if(unit.line)responseLayer.removeLayer(unit.line);if(unit.vehicle)responseLayer.removeLayer(unit.vehicle);});
+  record.units=[];
+  try{
+    const [facilities,fleet]=await Promise.all([discoverNearbyFacilities(a,record.searchRadius),loadHospitalFleet()]);
+    const categories=['ambulance','police'];
+    const nearby={ambulance:fleet.hasRegisteredHospitals?fleet.availableAmbulances:facilities.filter(item=>item.kind==='ambulance'),police:facilities.filter(item=>item.kind==='police')};
+    const candidates=[...nearby.ambulance,...nearby.police];
+    if(!candidates.length){
+      const currentRadius=record.searchRadius;
+      record.searchRadius=Math.min(MAX_FACILITY_SEARCH_RADIUS_METERS,Math.max(currentRadius+25000,currentRadius*2));
+      throw new Error(`No mapped emergency services found within ${(currentRadius/1000).toFixed(0)} km. Expanding the search and retrying automatically.`);
+    }
+    const timed=await drivingTimesToIncident(candidates,a);
+    const selected=await Promise.all(categories.map(async kind=>{
+      const best=timed.filter(item=>item.kind===kind&&Number.isFinite(item.driveSeconds))
+        .sort((x,y)=>x.driveSeconds-y.driveSeconds)[0];
+      if(!best) return {kind,noReachableFacility:true,error:kind==='ambulance'&&fleet.hasRegisteredHospitals?'No registered hospital ambulance is currently marked available. The system is waiting and will check again automatically.':`No reachable mapped ${kind==='police'?'police station':'ambulance or hospital base'} found within ${(record.searchRadius/1000).toFixed(0)} km`};
+      try{
+        const road=await fetchRoadRoute(best,a);
+        if(kind==='ambulance'){
+          const routeData={geometry:road.route.geometry,distance:road.route.distance,duration:road.route.duration,streets:[...new Set((road.route.legs||[]).flatMap(leg=>(leg.steps||[]).map(step=>step.name).filter(Boolean)))].slice(0,8)};
+          const endpoint=best.hospitalId?'/dispatch/assign-ambulance':'/dispatch/record-ambulance-route';
+          const payload=best.hospitalId?{alertId:a.id,hospitalId:best.hospitalId,unitId:best.unitId,route:routeData}:{alertId:a.id,facilityName:best.hospitalName||best.name||best.label||best.displayName||best.address||'Mapped medical response base',facilityType:best.facilityType||best.name||'Mapped hospital or ambulance base',lat:Number(best.lat),lng:Number(best.lng),route:routeData};
+          const assigned=await fetch(SERVER+endpoint,{method:'POST',headers:serviceHeaders({'Content-Type':'application/json'}),body:JSON.stringify(payload)});
+          if(!assigned.ok)throw new Error((await assigned.json().catch(()=>({}))).error||'Ambulance availability changed; searching again.');
+        }
+        return {kind,...best,route:road.route};
+      }catch(error){return {kind,error:error.message};}
+    }));
+    if(selected.some(item=>item.noReachableFacility)){
+      record.searchRadius=Math.min(MAX_FACILITY_SEARCH_RADIUS_METERS,Math.max(record.searchRadius+25000,record.searchRadius*2));
+    }
+    const paths=[];
+    selected.forEach(item=>{
+      if(item.error){record.units.push(item);return;}
+      const style=responderStyles[item.kind];
+      addStationMarker(item,item.kind);
+      const line=L.geoJSON(item.route.geometry,{style:{color:style.color,weight:6,opacity:.85,dashArray:'10 7'}}).addTo(responseLayer);
+      const start=item.route.geometry.coordinates[0];
+      const vehicle=L.marker([start[1],start[0]],{icon:makeUnitIcon(item.kind),zIndexOffset:800}).bindPopup(`<b>${style.title} preparing</b><br>From: ${item.name}<br>ETA: ${etaText(item.route.duration+TURNOUT_SECONDS)}`).addTo(responseLayer);
+      const unit={kind:item.kind,base:item,route:item.route,vehicle,line,cumulative:routeCumulativeMeters(item.route.geometry.coordinates),arrivalAt:record.dispatchAt+(item.route.duration+TURNOUT_SECONDS)*1000};
+      record.units.push(unit);
+      item.route.geometry.coordinates.forEach(([lng,lat])=>paths.push([lat,lng]));
+    });
+    record.state=record.units.length===categories.length&&record.units.every(unit=>unit.route)?'ready':'retrying';
+    record.error=record.units.map(unit=>unit.error).filter(Boolean).join('. ');
+    if(paths.length) map.fitBounds(L.latLngBounds(paths),{padding:[42,42],maxZoom:14});
+    updateResponseProgress(a.id);
+  }catch(error){
+    record.state='retrying';
+    record.error=error.name==='AbortError'||/aborted/i.test(error.message)?'Nearby emergency-service lookup timed out. Retrying automatically.':error.message;
+  }finally{
+    record.inFlight=false;
+  }
+  if(record.state==='retrying') scheduleResponseRetry(record);
+  if(selectedId===a.id) renderDetail(a);
+}
+function updateResponseProgress(id){
+  const record=responses[id];
+  if(!record) return;
+  record.units.forEach(unit=>{
+    if(!unit.route) return;
+    const coords=unit.route.geometry.coordinates;
+    const travelElapsed=Math.max(0,(Date.now()-record.dispatchAt)/1000-TURNOUT_SECONDS);
+    const fraction=Math.max(0,Math.min(1,travelElapsed/unit.route.duration));
+    const target=fraction*unit.cumulative[unit.cumulative.length-1];
+    let i=0; while(i<unit.cumulative.length-2&&unit.cumulative[i+1]<target) i++;
+    const segmentLength=unit.cumulative[i+1]-unit.cumulative[i];
+    const f=segmentLength ? (target-unit.cumulative[i])/segmentLength : 0;
+    const from=coords[i], to=coords[Math.min(i+1,coords.length-1)];
+    unit.vehicle.setLatLng([from[1]+(to[1]-from[1])*f,from[0]+(to[0]-from[0])*f]);
+    const remaining=Math.ceil((unit.arrivalAt-Date.now())/1000);
+    const state=Date.now()<record.dispatchAt+TURNOUT_SECONDS*1000?'preparing':'responding';
+    unit.vehicle.setPopupContent(`<b>${responderStyles[unit.kind].title} ${state}</b><br>From: ${unit.base.name}<br>ETA: ${etaText(remaining)}`);
+  });
+}
+function ensureResponseRoutes(){
+  alerts.filter(a=>a.status==='dispatched').forEach(a=>prepareResponse(a));
+  alerts.filter(a=>a.status==='completed').forEach(a=>{
+    const record=responses[a.id];
+    if(record?.retryTimer){clearTimeout(record.retryTimer);record.retryTimer=null;}
+    if(record) record.units.forEach(unit=>{
+      if(unit.line) responseLayer.removeLayer(unit.line);
+      if(unit.vehicle) responseLayer.removeLayer(unit.vehicle);
+    });
+    if(markers[a.id]) map.removeLayer(markers[a.id]);
+  });
+  Object.keys(responses).forEach(id=>updateResponseProgress(id));
+}
+function responseDetails(a){
+  const record=responses[a.id];
+  if(!record) return '';
+  if(record.state==='loading') return '<div class="lock-note">Finding mapped emergency services and comparing their road routes. If the lookup fails, it will retry automatically.</div>';
+  if(record.state==='retrying'&&!record.units.length){
+    const seconds=Math.max(1,Math.ceil((record.nextRetryAt-Date.now())/1000));
+    return `<div class="lock-note off">${escapeHtml(record.error||'Nearby facility or road route lookup failed.')}<br>Searching again automatically in ${seconds}s. The search area expands when no mapped service is found.</div>`;
+  }
+  return record.units.map(unit=>{
+    if(!unit.route){const seconds=Math.max(1,Math.ceil((record.nextRetryAt-Date.now())/1000));return `<div class="lock-note off">${responderStyles[unit.kind].title}: ${escapeHtml(unit.error||'No reachable mapped service yet.')}<br>Retrying automatically in ${seconds}s.</div>`;}
+    const eta=etaText(Math.ceil((unit.arrivalAt-Date.now())/1000));
+    const facilityNote=unit.base.simulated?'mapped simulated facility':unit.base.facilityType;
+    const roadKm=(unit.route.distance/1000).toFixed(1);
+    const hospitalDetails=unit.kind==='ambulance'&&unit.base.hospitalId?`<br><b>${escapeHtml(unit.base.hospitalName)}</b> · ${escapeHtml(unit.base.hospitalAddress)}<br>Ambulance ${escapeHtml(unit.base.unitId)} · ${escapeHtml(unit.base.plate)} · Official hospital contact ${escapeHtml(unit.base.hospitalPhone)}`:'';
+    return `<div class="lock-note" style="border-left:4px solid ${responderStyles[unit.kind].color}"><b>${responderStyles[unit.kind].title}</b> · ${eta}<br>Nearest available unit from: ${escapeHtml(unit.base.hospitalName||unit.base.name)}${hospitalDetails}<br><span class="mono">${escapeHtml(facilityNote)} · ${roadKm} km by road · ${routeStreetNames(unit.route)}</span></div>`;
+  }).join('');
+}
+
+// ---------- Sound + flash ----------
+document.getElementById('soundToggle').addEventListener('click', ()=>{
+  soundOn = !soundOn;
+  const btn = document.getElementById('soundToggle');
+  btn.classList.toggle('on', soundOn);
+  btn.textContent = soundOn ? '🔔 Sound On' : '🔕 Sound Off';
+});
+function playChime(){
+  if(!soundOn) return;
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    [880, 660].forEach((freq,i)=>{
+      const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+      osc.type='sine'; osc.frequency.value=freq;
+      const start = now + i*0.16;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.35, start+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start+0.28);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(start); osc.stop(start+0.3);
+    });
+  }catch(e){}
+}
+function flashHeader(){
+  const h = document.getElementById('headerBar');
+  h.classList.remove('flash'); void h.offsetWidth;
+  h.classList.add('flash');
+}
+function checkForNewAlerts(){
+  const currentIds = new Set(alerts.map(a=>a.id));
+  if(knownAlertIds === null){
+    knownAlertIds = currentIds;
+    if(alerts.length){const latest=alerts[0],lat=Number(latest.lat),lng=Number(latest.lng);if(lat>=18.36&&lat<=18.72&&lng>=73.65&&lng<=74.05)map.setView([lat,lng],14);}
+    return;
+  }
+  const newPending = alerts.filter(a => a.status==='pending' && !knownAlertIds.has(a.id));
+  if(newPending.length > 0){
+    playChime(); flashHeader();
+    const newest=newPending[0];
+    map.flyTo([Number(newest.lat),Number(newest.lng)],14,{duration:1.1});
+  }
+  knownAlertIds = currentIds;
+}
+
+// ---------- Data + rendering ----------
+function fmtTime(iso){ return new Date(iso).toLocaleTimeString('en-GB',{hour12:false}); }
+
+async function pollAlerts(){
+  try{
+    const res = await fetch(SERVER + '/alerts');
+    if(!res.ok) throw new Error('bad response');
+    alerts = await res.json();
+    setConnected(true);
+    checkForNewAlerts();
+    syncMarkers();
+    ensureResponseRoutes();
+    renderQueue();
+    renderAllHistory();
+    if(selectedId){ const a = alerts.find(a=>a.id===selectedId); if(a) renderDetail(a); }
+  }catch(e){ setConnected(false); }
+}
+function setConnected(ok){
+  document.getElementById('connDot').classList.toggle('off', !ok);
+  document.getElementById('connText').textContent = ok ? 'Connected' : 'Server unreachable';
+}
+function queueItemHTML(a){
+  const badgeClass = a.status==='pending' ? 'pending' : (a.status==='dispatched' ? 'dispatched' : (a.status==='completed' ? 'completed' : 'cancelled'));
+  const badgeText = a.status==='pending' ? 'Awaiting staff dispatch' : a.status;
+  return `
+    <div class="qi-top"><span class="qi-id">${a.id}</span><span class="badge ${badgeClass}">${badgeText}</span></div>
+    <div class="qi-zone">${a.zone}</div>
+    <div class="qi-time">${fmtTime(a.time)} · ${a.riderId}${a.helpRequested?' · HELP REQUESTED':''}</div>
+  `;
+}
+function renderQueue(){
+  const list = document.getElementById('queueList');
+  if(alerts.length===0){ list.innerHTML = '<div class="empty">No incidents reported.</div>'; return; }
+  const recent = alerts.slice(0,5);
+  list.innerHTML='';
+  recent.forEach(a=>{
+    const item = document.createElement('div');
+    item.className = 'queue-item' + (a.id===selectedId ? ' active':'');
+    item.innerHTML = queueItemHTML(a);
+    item.addEventListener('click', ()=>{ selectedId=a.id; renderQueue(); renderDetail(a); map.panTo([a.lat,a.lng]); markers[a.id]?.openPopup(); });
+    list.appendChild(item);
+  });
+  if(alerts.length > 5){
+    const note = document.createElement('div');
+    note.style.cssText='text-align:center;color:var(--muted2);font-size:0.7rem;margin-top:6px;';
+    note.textContent = `+${alerts.length-5} earlier incident${alerts.length-5===1?'':'s'} in system records`;
+    list.appendChild(note);
+  }
+}
+async function dispatchNow(id){
+  await fetch(SERVER + '/alerts/' + id, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status:'dispatched'}) });
+  pollAlerts();
+}
+async function cancelAfterCall(id){
+  if(!confirm('Confirm that you called the Helmet User and they stated they are safe. Cancel this incident and keep it in the history?')) return;
+  const response=await fetch(SERVER + '/alerts/' + id, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status:'cancelled'}) });
+  if(!response.ok){alert('Could not cancel this incident. Check that the backend is running and try again.');return;}
+  pollAlerts();
+}
+async function completeRescue(id){
+  const response=await fetch(SERVER + '/alerts/' + id, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status:'completed'}) });
+  if(!response.ok){ alert('Could not mark the rescue complete. Check that the backend is running and try again.'); return; }
+  pollAlerts();
+}
+function renderDetail(a){
+  const body = document.getElementById('detailBody');
+  if(!a){ body.innerHTML = '<div class="detail-empty">Select an incident.</div>'; return; }
+  const phone = String(a.riderPhone || '').replace(/[^0-9+]/g,'');
+  const riderName = a.riderName || 'Name not on file';
+  const callRider = phone ? `<div class="detail-val mono">${escapeHtml(a.riderPhone)}</div><a class="actbtn" style="display:block;text-align:center;text-decoration:none;margin:8px 0" href="tel:${encodeURIComponent(phone)}">☎ Call Helmet User to confirm</a>` : '<div class="lock-note off">No Helmet User phone number is saved in this profile.</div>';
+  const emergencyContacts = (a.emergencyContacts || []).map(contact=>{
+    const contactPhone=String(contact.phone||'').replace(/[^0-9+]/g,'');
+    return `<div class="detail-val">${escapeHtml(contact.name)} · ${escapeHtml(contact.phone)}${contactPhone?` <a href="tel:${encodeURIComponent(contactPhone)}">Call</a>`:''}</div>`;
+  }).join('') || '<div class="detail-val">No emergency contact saved</div>';
+  let actions = '';
+  if(a.status==='pending'){
+    actions = `
+      <div class="lock-note">The 45-second response window is closed.${a.helpRequested?' The Helmet User requested help.':''} Call to confirm their status. Dispatch if help is needed, or cancel only after confirming they are safe.</div>
+      <div class="actions"><button class="actbtn" onclick="dispatchNow('${a.id}')">Dispatch Help</button><button class="actbtn" onclick="cancelAfterCall('${a.id}')">Call Confirmed Safe — Cancel Alert</button></div>`;
+  } else if(a.status==='dispatched'){
+    actions = `<div class="lock-note ok">Dispatched to ${a.zone}</div><div class="actions"><button class="actbtn" onclick="completeRescue('${a.id}')">Rescue Complete</button></div>`;
+  } else if(a.status==='completed'){
+    actions = `<div class="lock-note ok">Response completed</div>`;
+  } else {
+    actions = `<div class="lock-note off">Cancelled by rider — false alarm</div>`;
+  }
+  body.innerHTML = `
+    <div class="detail-row"><div class="detail-label">Incident ID</div><div class="detail-val mono">${escapeHtml(a.id)}</div></div>
+    <div class="detail-row"><div class="detail-label">Helmet User / Helmet ID</div><div class="detail-val mono">${escapeHtml(a.riderId)}</div></div>
+    <div class="detail-row"><div class="detail-label">Helmet User name</div><div class="detail-val">${escapeHtml(riderName)}</div></div>
+    <div class="detail-row"><div class="detail-label">Detected</div><div class="detail-val mono">${fmtTime(a.time)}</div></div>
+    <div class="detail-row"><div class="detail-label">Coordinates</div><div class="detail-val mono">${a.lat}, ${a.lng}</div></div>
+    <div class="detail-row"><div class="detail-label">Location</div><div class="detail-val">${escapeHtml(a.location || a.zone)}</div></div>
+    <div class="detail-row"><div class="detail-label">Helmet User contact</div>${callRider}</div>
+    ${a.bloodGroup?`<div class="detail-row"><div class="detail-label">Blood group</div><div class="detail-val">${escapeHtml(a.bloodGroup)}</div></div>`:''}
+    ${a.medicalNotes?`<div class="detail-row"><div class="detail-label">Medical notes</div><div class="detail-val">${escapeHtml(a.medicalNotes)}</div></div>`:''}
+    <div class="detail-row"><div class="detail-label">Emergency contacts</div>${emergencyContacts}</div>
+    <div class="detail-row"><div class="detail-label">Status</div><div class="detail-val">${escapeHtml(a.status)}</div></div>
+    ${actions}
+    ${responseDetails(a)}
+  `;
+}
+
+function renderAllHistory(){
+  const rows=document.getElementById('historyRows');
+  const summary=document.getElementById('historySummary');
+  if(!rows||!summary) return;
+  const riders=new Set(alerts.map(a=>a.riderId).filter(Boolean));
+  summary.textContent=`${alerts.length} crash records across ${riders.size} riders · newest first`;
+  if(!alerts.length){rows.innerHTML='<tr><td colspan="5" class="empty">No crash history yet.</td></tr>';return;}
+  rows.innerHTML=alerts.map(a=>`<tr data-alert-id="${escapeHtml(a.id)}"><td>${escapeHtml(new Date(a.time).toLocaleString())}</td><td>${escapeHtml(a.riderName||'Name not on file')}</td><td class="mono">${escapeHtml(a.riderId)}</td><td>${escapeHtml(a.location||a.zone||'Location unavailable')}</td><td><span class="badge ${escapeHtml(a.status)}">${escapeHtml(a.status)}</span></td></tr>`).join('');
+  rows.querySelectorAll('tr[data-alert-id]').forEach(row=>row.addEventListener('click',()=>{
+    const a=alerts.find(item=>item.id===row.dataset.alertId);if(!a)return;
+    historyMode=false;document.querySelector('.layout').classList.remove('hidden');document.getElementById('historyView').classList.add('hidden');
+    selectedId=a.id;renderQueue();renderDetail(a);map.setView([a.lat,a.lng],14);if(markers[a.id]&&map.hasLayer(markers[a.id]))markers[a.id].openPopup();
+    setTimeout(()=>map.invalidateSize(),50);
+  }));
+}
+function showAllHistory(){
+  historyMode=true;document.querySelector('.layout').classList.add('hidden');document.getElementById('historyView').classList.remove('hidden');renderAllHistory();
+}
+function showLiveDispatch(){
+  historyMode=false;document.getElementById('historyView').classList.add('hidden');document.querySelector('.layout').classList.remove('hidden');setTimeout(()=>map.invalidateSize(),50);
+}
+document.getElementById('showHistory').addEventListener('click',showAllHistory);
+document.getElementById('backToLive').addEventListener('click',showLiveDispatch);
+document.getElementById('clearCancelledPins').addEventListener('click',clearCancelledPins);
+
+window.addEventListener('resize',()=>map.invalidateSize());
+setTimeout(()=>map.invalidateSize(),250);
+pollAlerts();
+setInterval(pollAlerts, 1000);
+</script>
+</body>
+</html>
+
+

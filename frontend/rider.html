@@ -228,3 +228,235 @@ setInterval(poll, 1000);
 </body>
 </html>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HELMS — Rider</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1018; --panel:#131B2A; --line:#223049;
+    --text:#E7ECF5; --muted:#7C8AA5;
+    --alert:#FF5C5C; --pending:#FFB347; --resolved:#35D0A0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:'Space Grotesk',sans-serif;
+       min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+  .card{width:100%; max-width:380px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px; text-align:center;}
+  .brand-logo{display:block;width:min(210px,76%);height:auto;margin:0 auto 16px}.rider-id{font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--muted); margin-bottom:20px;}
+  .idle .ring{width:90px; height:90px; border-radius:50%; border:3px solid var(--resolved); margin:0 auto 18px; display:flex; align-items:center; justify-content:center; font-size:1.6rem;}
+  h1{font-size:1.15rem; margin:0 0 6px;}
+  p.sub{color:var(--muted); font-size:0.85rem; margin:0 0 8px;}
+  .countdown{font-family:'IBM Plex Mono',monospace; font-size:3rem; color:var(--pending); margin:14px 0;}
+  .cancelbtn{width:100%; padding:16px; border-radius:10px; border:none; background:var(--alert); color:#210505;
+             font-size:1.05rem; font-weight:700; cursor:pointer; margin-top:10px;}
+  .cancelbtn:active{filter:brightness(.9);}
+  .helpbtn{width:100%;padding:15px;border:1px solid var(--resolved);border-radius:10px;background:var(--resolved);color:#062016;font-size:1.02rem;font-weight:700;cursor:pointer;margin-top:10px;}
+  .helpbtn:disabled{opacity:.75;cursor:default;}
+  .statusmsg{font-size:1rem; margin-top:10px;}
+  .statusmsg.ok{color:var(--resolved);}
+  .statusmsg.warn{color:var(--muted);}
+  .setup{margin-top:20px; padding-top:16px; border-top:1px solid var(--line); text-align:left;}
+  .setup label{display:block; color:var(--muted); font-size:.78rem; margin-bottom:7px;}
+  .setup input{width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:8px; background:#0B1018; color:var(--text); font:inherit;}
+  .hint{font-size:.75rem; color:var(--muted); line-height:1.45; margin:10px 0 0;}
+  .connection{font-size:.75rem; color:var(--muted); margin-top:12px;}
+  @media(max-width:480px){body{padding:12px; align-items:flex-start; padding-top:max(16px,env(safe-area-inset-top));}.card{padding:22px 18px; margin:auto 0;}.countdown{font-size:3.5rem}.cancelbtn{min-height:52px}}
+</style>
+<script src="brand-migration.js"></script>
+</head>
+<body>
+
+<div class="card" id="card">
+  <img class="brand-logo" src="helms-logo-light.svg" alt="HELMS — Helmet Emergency &amp; Monitoring System"><div class="rider-id">HELMET ID: <span id="riderIdLabel">helmet-01</span></div>
+  <div id="content">
+    <div class="idle"><div class="ring">🪖</div></div>
+    <h1>No active alert</h1>
+    <p class="sub">Everything's quiet. This page will update automatically if a crash is detected.</p>
+  </div>
+  <div class="setup">
+    <label for="serverInput">Backend API address</label>
+    <input id="serverInput" type="url" inputmode="url" placeholder="https://your-service.onrender.com">
+    <a class="hint" style="display:block;text-align:center" href="rider-portal.html">Back to rider dashboard</a>
+  </div>
+  <div class="connection" id="connection">Connecting to backend; automatic alert sound and vibration will be attempted on this device.</div>
+</div>
+
+<script>
+const RIDER_ID = sessionStorage.getItem('helms-rider-id') || 'helmet-01'; // set by the signed-in rider portal
+const RIDER_TOKEN = sessionStorage.getItem('helms-token') || '';
+let activeAlert = null;
+let cancelled = false;
+let audioContext = null;
+let alarmTimer = null;
+let alarmAlertId = null;
+let audioReady = false;
+
+const serverInput = document.getElementById('serverInput');
+const connectionLabel = document.getElementById('connection');
+const params = new URLSearchParams(location.search);
+function readSavedServer(){ try { return localStorage.getItem('helms-api-base'); } catch(e) { return null; } }
+function saveServer(){ try { localStorage.setItem('helms-api-base', serverUrl()); } catch(e) {} }
+const savedServer = readSavedServer();
+const isLocal = ['localhost','127.0.0.1'].includes(location.hostname) || location.protocol === 'file:';
+serverInput.value = params.get('api') || params.get('server') || (!isLocal && location.hostname ? 'http://' + location.hostname + ':3000' : '') || savedServer || 'http://172.27.230.228:3000';
+function serverUrl(){ return serverInput.value.trim().replace(/\/$/, ''); }
+serverInput.addEventListener('change', () => {
+  saveServer();
+  poll();
+});
+
+async function prepareAlertAudio(){
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return;
+  try {
+    audioContext = audioContext || new AudioCtx();
+    if (audioContext.state === 'suspended') await audioContext.resume();
+    audioReady = audioContext.state === 'running';
+  } catch (e) { audioReady = false; }
+}
+
+// Browsers may require a user gesture before allowing web audio. Retry quietly
+// after the rider's first normal interaction; there is no separate enable step.
+prepareAlertAudio();
+['pointerdown','keydown','touchstart'].forEach(eventName => {
+  document.addEventListener(eventName, prepareAlertAudio, {once:true, passive:true});
+});
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) prepareAlertAudio();
+});
+
+function alarmTone(freq, duration, volume=0.5){
+  if(!audioContext) { prepareAlertAudio(); return; }
+  if(audioContext.state !== 'running'){
+    audioContext.resume().then(() => {
+      audioReady = audioContext.state === 'running';
+      if(audioReady) alarmTone(freq, duration, volume);
+    }).catch(() => { audioReady = false; });
+    return;
+  }
+  audioReady = true;
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  oscillator.type = 'square'; oscillator.frequency.value = freq;
+  gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + 0.02);
+  gain.gain.setValueAtTime(volume, audioContext.currentTime + duration - 0.04);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+  oscillator.connect(gain); gain.connect(audioContext.destination);
+  oscillator.start(); oscillator.stop(audioContext.currentTime + duration);
+}
+function startAlarm(id){
+  if(alarmAlertId === id) return;
+  stopAlarm(); alarmAlertId = id;
+  const pulse = () => { alarmTone(880, .28); setTimeout(() => alarmTone(660, .35), 360); if(navigator.vibrate) navigator.vibrate([400,180,400,180,700]); };
+  pulse(); alarmTimer = setInterval(pulse, 1800);
+}
+function stopAlarm(){
+  if(alarmTimer) clearInterval(alarmTimer);
+  alarmTimer = null; alarmAlertId = null;
+  if(navigator.vibrate) navigator.vibrate(0);
+}
+
+function secsSince(iso){ return Math.floor((Date.now() - new Date(iso).getTime())/1000); }
+function remaining(a){
+  // Prefer backend countdown to avoid differences between the phone and PC clocks.
+  if(Number.isFinite(a.remainingSeconds)) return Math.max(0, a.remainingSeconds);
+  return Math.max(0, 45 - secsSince(a.time));
+}
+
+async function poll(){
+  if(!RIDER_TOKEN){ location.replace('rider-portal.html'); return; }
+  try{
+    const res = await fetch(serverUrl() + '/rider/alerts', {headers:{Authorization:'Bearer '+RIDER_TOKEN}});
+    if(!res.ok) throw new Error('Server returned ' + res.status);
+    const alerts = await res.json();
+    const mine = alerts.filter(a => a.riderId === RIDER_ID);
+    const latest = mine[0]; // most recent first (backend unshifts new ones)
+    connectionLabel.textContent = 'Connected to ' + serverUrl() + ' · helmet ' + RIDER_ID;
+    render(latest);
+  }catch(e){
+    connectionLabel.textContent = 'Cannot reach backend at ' + serverUrl() + '. Check address, Wi-Fi and backend.';
+    document.getElementById('content').innerHTML =
+      `<div class="idle"><div class="ring" style="border-color:var(--alert)">⚠️</div></div>
+       <h1>Not connected</h1><p class="sub">Can't reach the server. Check WiFi / backend.</p>`;
+  }
+}
+
+function render(a){
+  const content = document.getElementById('content');
+  if(!a){
+    stopAlarm();
+    content.innerHTML = `
+      <div class="idle"><div class="ring">🪖</div></div>
+      <h1>No active alert</h1>
+      <p class="sub">Everything's quiet. This page will update automatically if a crash is detected.</p>`;
+    return;
+  }
+
+  if(a.status==='pending'){
+    const r = remaining(a);
+    if(r>0){
+      startAlarm(a.id);
+      content.innerHTML = `
+        <div class="idle"><div class="ring" style="border-color:var(--alert)">⚠️</div></div>
+        <h1>Crash detected</h1>
+        <p class="sub">If you need assistance, tap Send Help. If you are safe, tap Cancel. Send Help shortens the response timer to 10 seconds when more than 10 seconds remain; otherwise the current timer continues.</p>
+        <p class="sub" style="margin-top:10px;color:var(--text)">${String(a.location || a.zone || '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}</p>
+        <div class="countdown">${r}</div>
+        ${a.helpRequested ? '<p class="statusmsg ok">Help request noted. The dispatch desk will receive the incident when the timer ends.</p><button class="helpbtn" disabled>Help requested</button>' : `<button class="helpbtn" onclick="sendHelp('${a.id}')">Send Help</button>`}
+        <button class="cancelbtn" onclick="cancelAlert('${a.id}')">I am safe — Cancel alert</button>`;
+    } else {
+      stopAlarm();
+      content.innerHTML = `
+        <div class="idle"><div class="ring" style="border-color:var(--pending)">☎</div></div>
+        <h1>Alert sent to dispatch</h1>
+        <p class="statusmsg warn">Your response window has closed. The dispatch team has received your alert${a.helpRequested ? ' and your request for help' : ''} and may call to check on you.</p>`;
+    }
+  } else if(a.status==='dispatched'){
+    stopAlarm();
+    content.innerHTML = `
+      <div class="idle"><div class="ring" style="border-color:var(--resolved)">✓</div></div>
+      <h1>Help is on the way</h1>
+      <p class="statusmsg ok">Emergency services have been alerted.</p>`;
+  } else if(a.status==='completed'){
+    stopAlarm();
+    content.innerHTML = `
+      <div class="idle"><div class="ring">✓</div></div>
+      <h1>Rescue completed</h1>
+      <p class="statusmsg ok">The dispatch team marked this response complete.</p>`;
+  } else {
+    stopAlarm();
+    content.innerHTML = `
+      <div class="idle"><div class="ring">🪖</div></div>
+      <h1>Alert cancelled</h1>
+      <p class="statusmsg warn">No alert was sent. Stay safe out there.</p>`;
+  }
+}
+
+async function sendHelp(id){
+  const response = await fetch(serverUrl() + '/alerts/' + id, { method:'PATCH', headers:{'Content-Type':'application/json',Authorization:'Bearer '+RIDER_TOKEN}, body: JSON.stringify({helpRequested:true}) });
+  if(!response.ok){ connectionLabel.textContent = 'Could not record the help request. Check the connection and try again.'; return; }
+  poll();
+}
+
+async function cancelAlert(id){
+  const response = await fetch(serverUrl() + '/alerts/' + id, { method:'PATCH', headers:{'Content-Type':'application/json',Authorization:'Bearer '+RIDER_TOKEN}, body: JSON.stringify({status:'cancelled'}) });
+  if(!response.ok){ const result=await response.json().catch(()=>({})); connectionLabel.textContent=result.error||'Could not cancel the alert.'; poll(); return; }
+  stopAlarm();
+  poll();
+}
+
+document.getElementById('riderIdLabel').textContent = RIDER_ID;
+saveServer();
+poll();
+setInterval(poll, 1000);
+</script>
+</body>
+</html>
+
+

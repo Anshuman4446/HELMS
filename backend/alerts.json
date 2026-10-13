@@ -1,0 +1,1198 @@
+{
+  "counter": 1112,
+  "alerts": [
+    {
+      "id": "CR-1112",
+      "riderId": "helmet-01",
+      "lat": 18.5135,
+      "lng": 73.8675,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Ganesh Peth, Pune, Maharashtra",
+      "time": "2026-10-08T15:12:01.365Z",
+      "status": "dispatched",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-10-08T15:12:26.163Z",
+      "dispatchAt": "2026-10-08T15:12:36.163Z",
+      "statusChangedAt": "2026-10-08T15:12:53.032Z",
+      "ambulanceAssignment": {
+        "hospitalName": "Kirad Hospital",
+        "hospitalAddress": "Mapped medical response location",
+        "hospitalPhone": "",
+        "unitId": "SIMULATED AMBULANCE",
+        "plate": "",
+        "lat": 18.5143478,
+        "lng": 73.868913,
+        "assignedAt": "2026-10-08T15:12:57.933Z",
+        "facilityType": "hospital",
+        "simulated": true,
+        "routeGeometry": {
+          "coordinates": [
+            [
+              73.868689,
+              18.514342
+            ],
+            [
+              73.8687,
+              18.513976
+            ],
+            [
+              73.86862,
+              18.513991
+            ],
+            [
+              73.868233,
+              18.513992
+            ],
+            [
+              73.867876,
+              18.513992
+            ],
+            [
+              73.867873,
+              18.513621
+            ],
+            [
+              73.867496,
+              18.513608
+            ]
+          ],
+          "type": "LineString"
+        },
+        "routeDistance": 208.6,
+        "routeDuration": 37,
+        "routeStreets": [
+          "Jawaharlal Nehru Marg"
+        ]
+      }
+    },
+    {
+      "id": "CR-1111",
+      "riderId": "helmet-01",
+      "lat": 18.5135,
+      "lng": 73.8675,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Ganesh Peth, Pune, Maharashtra",
+      "time": "2026-10-01T15:07:39.837Z",
+      "status": "dispatched",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-10-01T15:07:57.630Z",
+      "dispatchAt": "2026-10-01T15:08:07.630Z",
+      "statusChangedAt": "2026-10-01T15:08:24.258Z",
+      "ambulanceAssignment": {
+        "hospitalName": "Kirad Hospital",
+        "hospitalAddress": "Mapped medical response location",
+        "hospitalPhone": "",
+        "unitId": "SIMULATED AMBULANCE",
+        "plate": "",
+        "lat": 18.5143478,
+        "lng": 73.868913,
+        "assignedAt": "2026-10-08T15:10:32.025Z",
+        "facilityType": "hospital",
+        "simulated": true,
+        "routeGeometry": {
+          "coordinates": [
+            [
+              73.868689,
+              18.514342
+            ],
+            [
+              73.8687,
+              18.513976
+            ],
+            [
+              73.86862,
+              18.513991
+            ],
+            [
+              73.868233,
+              18.513992
+            ],
+            [
+              73.867876,
+              18.513992
+            ],
+            [
+              73.867873,
+              18.513621
+            ],
+            [
+              73.867496,
+              18.513608
+            ]
+          ],
+          "type": "LineString"
+        },
+        "routeDistance": 208.6,
+        "routeDuration": 37,
+        "routeStreets": [
+          "Jawaharlal Nehru Marg"
+        ]
+      }
+    },
+    {
+      "id": "CR-1110",
+      "riderId": "helmet-01",
+      "lat": 18.5135,
+      "lng": 73.8675,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Ganesh Peth, Pune, Maharashtra",
+      "time": "2026-10-01T09:02:10.230Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-10-01T09:02:26.187Z",
+      "dispatchAt": "2026-10-01T09:02:36.187Z",
+      "statusChangedAt": "2026-10-01T09:04:40.612Z",
+      "ambulanceAssignment": {
+        "hospitalName": "Kirad Hospital",
+        "hospitalAddress": "Mapped medical response location",
+        "hospitalPhone": "",
+        "unitId": "SIMULATED AMBULANCE",
+        "plate": "",
+        "lat": 18.5143478,
+        "lng": 73.868913,
+        "assignedAt": "2026-10-01T09:03:03.275Z",
+        "facilityType": "hospital",
+        "simulated": true,
+        "routeGeometry": {
+          "coordinates": [
+            [
+              73.868689,
+              18.514342
+            ],
+            [
+              73.8687,
+              18.513976
+            ],
+            [
+              73.86862,
+              18.513991
+            ],
+            [
+              73.868233,
+              18.513992
+            ],
+            [
+              73.867876,
+              18.513992
+            ],
+            [
+              73.867873,
+              18.513621
+            ],
+            [
+              73.867496,
+              18.513608
+            ]
+          ],
+          "type": "LineString"
+        },
+        "routeDistance": 208.6,
+        "routeDuration": 37,
+        "routeStreets": [
+          "Jawaharlal Nehru Marg"
+        ]
+      }
+    },
+    {
+      "id": "CR-1109",
+      "riderId": "helmet-01",
+      "lat": 18.4815,
+      "lng": 73.8285,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Tukai Nagar, Anandnagar, Maharashtra",
+      "time": "2026-09-30T16:33:13.894Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-30T16:33:24.854Z",
+      "dispatchAt": "2026-09-30T16:33:34.854Z",
+      "statusChangedAt": "2026-09-30T16:36:41.285Z",
+      "ambulanceAssignment": {
+        "hospitalName": "Aashirwad Hospital",
+        "hospitalAddress": "Mapped medical response location",
+        "hospitalPhone": "",
+        "unitId": "SIMULATED AMBULANCE",
+        "plate": "",
+        "lat": 18.479729,
+        "lng": 73.8282621,
+        "assignedAt": "2026-09-30T16:35:42.590Z",
+        "facilityType": "hospital",
+        "simulated": true,
+        "routeGeometry": {
+          "coordinates": [
+            [
+              73.828256,
+              18.479715
+            ],
+            [
+              73.828309,
+              18.479696
+            ],
+            [
+              73.828527,
+              18.479619
+            ],
+            [
+              73.82888,
+              18.479509
+            ],
+            [
+              73.829081,
+              18.47946
+            ],
+            [
+              73.829234,
+              18.479441
+            ],
+            [
+              73.829442,
+              18.479385
+            ],
+            [
+              73.829667,
+              18.479313
+            ],
+            [
+              73.830038,
+              18.479192
+            ],
+            [
+              73.830116,
+              18.479449
+            ],
+            [
+              73.830197,
+              18.479686
+            ],
+            [
+              73.830279,
+              18.479934
+            ],
+            [
+              73.830188,
+              18.479964
+            ],
+            [
+              73.829694,
+              18.480095
+            ],
+            [
+              73.829538,
+              18.480139
+            ],
+            [
+              73.829184,
+              18.480232
+            ],
+            [
+              73.828917,
+              18.480295
+            ],
+            [
+              73.828808,
+              18.480295
+            ],
+            [
+              73.828586,
+              18.480377
+            ],
+            [
+              73.828238,
+              18.480495
+            ],
+            [
+              73.82816,
+              18.48053
+            ],
+            [
+              73.828335,
+              18.480892
+            ],
+            [
+              73.82855,
+              18.481395
+            ],
+            [
+              73.828465,
+              18.481437
+            ]
+          ],
+          "type": "LineString"
+        },
+        "routeDistance": 631.7,
+        "routeDuration": 109.1,
+        "routeStreets": [
+          "Shiv Swami Samarth Math Marg"
+        ]
+      }
+    },
+    {
+      "id": "CR-1108",
+      "riderId": "helmet-01",
+      "lat": 18.5625,
+      "lng": 73.8595,
+      "zone": "Zone A — North Pune Precinct",
+      "zoneId": "A",
+      "location": "Khadki Bazar-Vishrantwadi Road, Mandalay Lines, Khadki, Maharashtra",
+      "time": "2026-09-30T16:29:45.781Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-30T16:29:47.069Z",
+      "dispatchAt": "2026-09-30T16:29:57.069Z",
+      "statusChangedAt": "2026-09-30T16:35:27.945Z"
+    },
+    {
+      "id": "CR-1107",
+      "riderId": "helmet-01",
+      "lat": 18.5615,
+      "lng": 73.8865,
+      "zone": "Zone A — North Pune Precinct",
+      "zoneId": "A",
+      "location": "18.56150, 73.88650",
+      "time": "2026-09-30T16:26:56.619Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-30T16:26:58.710Z",
+      "dispatchAt": "2026-09-30T16:27:08.710Z",
+      "statusChangedAt": "2026-09-30T16:29:13.267Z",
+      "ambulanceAssignment": {
+        "hospitalName": "Inaam General Hospital",
+        "hospitalAddress": "Mapped medical response location",
+        "hospitalPhone": "",
+        "unitId": "SIMULATED AMBULANCE",
+        "plate": "",
+        "lat": 18.5618595,
+        "lng": 73.892592,
+        "assignedAt": "2026-09-30T16:27:26.010Z",
+        "facilityType": "hospital",
+        "simulated": true,
+        "routeGeometry": {
+          "coordinates": [
+            [
+              73.892478,
+              18.561915
+            ],
+            [
+              73.892466,
+              18.561892
+            ],
+            [
+              73.89236,
+              18.561661
+            ],
+            [
+              73.892312,
+              18.56154
+            ],
+            [
+              73.892305,
+              18.561521
+            ],
+            [
+              73.892272,
+              18.561439
+            ],
+            [
+              73.892063,
+              18.56086
+            ],
+            [
+              73.891963,
+              18.560584
+            ],
+            [
+              73.891853,
+              18.560261
+            ],
+            [
+              73.89175,
+              18.560308
+            ],
+            [
+              73.891719,
+              18.560328
+            ],
+            [
+              73.891683,
+              18.560366
+            ],
+            [
+              73.891649,
+              18.560439
+            ],
+            [
+              73.891617,
+              18.560525
+            ],
+            [
+              73.891582,
+              18.560618
+            ],
+            [
+              73.891527,
+              18.560699
+            ],
+            [
+              73.891404,
+              18.560797
+            ],
+            [
+              73.891283,
+              18.560864
+            ],
+            [
+              73.891151,
+              18.560936
+            ],
+            [
+              73.890866,
+              18.561082
+            ],
+            [
+              73.889972,
+              18.561541
+            ],
+            [
+              73.889361,
+              18.561854
+            ],
+            [
+              73.889078,
+              18.562007
+            ],
+            [
+              73.88904,
+              18.561938
+            ],
+            [
+              73.888825,
+              18.561828
+            ],
+            [
+              73.888678,
+              18.561766
+            ],
+            [
+              73.888491,
+              18.561681
+            ],
+            [
+              73.888437,
+              18.561635
+            ],
+            [
+              73.88826,
+              18.561455
+            ],
+            [
+              73.888193,
+              18.561417
+            ],
+            [
+              73.888118,
+              18.561412
+            ],
+            [
+              73.888024,
+              18.561445
+            ],
+            [
+              73.887951,
+              18.561479
+            ],
+            [
+              73.887538,
+              18.561674
+            ],
+            [
+              73.88745,
+              18.561685
+            ],
+            [
+              73.887348,
+              18.561672
+            ],
+            [
+              73.887209,
+              18.561657
+            ],
+            [
+              73.887106,
+              18.561675
+            ],
+            [
+              73.886795,
+              18.561793
+            ],
+            [
+              73.88657,
+              18.561838
+            ],
+            [
+              73.886503,
+              18.561839
+            ]
+          ],
+          "type": "LineString"
+        },
+        "routeDistance": 858.4,
+        "routeDuration": 124.8,
+        "routeStreets": [
+          "National Games Marg",
+          "Samrat Ashok Marg"
+        ]
+      }
+    },
+    {
+      "id": "CR-1106",
+      "riderId": "helmet-01",
+      "lat": 18.4955,
+      "lng": 73.8665,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Mukund Nagar, Pune, Maharashtra",
+      "time": "2026-09-30T16:24:31.497Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-30T16:24:35.312Z",
+      "dispatchAt": "2026-09-30T16:24:45.312Z",
+      "statusChangedAt": "2026-09-30T16:26:09.537Z"
+    },
+    {
+      "id": "CR-1105",
+      "riderId": "helmet-01",
+      "lat": 18.4935,
+      "lng": 73.8755,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Mukund Nagar, Pune, Maharashtra",
+      "time": "2026-09-30T16:18:56.289Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-30T16:18:59.322Z",
+      "cancelledAt": "2026-09-30T16:18:59.322Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1104",
+      "riderId": "helmet-01",
+      "lat": 18.5545,
+      "lng": 73.8795,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Ward 16, Pune, Maharashtra",
+      "time": "2026-09-29T13:27:10.548Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-29T13:27:14.324Z",
+      "dispatchAt": "2026-09-29T13:27:24.324Z",
+      "statusChangedAt": "2026-09-30T16:18:36.258Z"
+    },
+    {
+      "id": "CR-1103",
+      "riderId": "helmet-01",
+      "lat": 18.5545,
+      "lng": 73.8695,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Pune, Maharashtra",
+      "time": "2026-09-29T13:02:45.802Z",
+      "status": "completed",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-29T13:02:51.604Z",
+      "statusChangedAt": "2026-09-29T13:04:57.005Z"
+    },
+    {
+      "id": "CR-1102",
+      "riderId": "helmet-01",
+      "lat": 18.5565,
+      "lng": 73.8685,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Vishrantwadi, Pune, Maharashtra",
+      "time": "2026-09-29T12:45:12.350Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-29T12:45:15.287Z",
+      "cancelledAt": "2026-09-29T12:45:15.287Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1101",
+      "riderId": "helmet-01",
+      "lat": 18.5065,
+      "lng": 73.8485,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Baburao Phule Path, Navi Peth, Pune, Maharashtra",
+      "time": "2026-09-29T12:41:57.783Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-29T12:44:26.246Z"
+    },
+    {
+      "id": "CR-1100",
+      "riderId": "helmet-01",
+      "lat": 18.5305,
+      "lng": 73.8515,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Thube Park Road, Shivajinagar, Pune, Maharashtra",
+      "time": "2026-09-29T07:55:19.072Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-29T12:40:14.288Z"
+    },
+    {
+      "id": "CR-1099",
+      "riderId": "helmet-01",
+      "lat": 18.4715,
+      "lng": 73.8135,
+      "zone": "Zone C — South Pune Precinct",
+      "zoneId": "C",
+      "location": "Katraj - Dehu Road Bypass, Manik Baug, Anandnagar, Maharashtra",
+      "time": "2026-09-28T11:38:15.783Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T11:41:06.996Z"
+    },
+    {
+      "id": "CR-1098",
+      "riderId": "helmet-01",
+      "lat": 18.5605,
+      "lng": 73.8425,
+      "zone": "Zone A — North Pune Precinct",
+      "zoneId": "A",
+      "location": "Breman Chowk - Khadki Bazar Road, Mandalay Lines, Khadki, Maharashtra",
+      "time": "2026-09-28T11:38:10.747Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T11:40:59.777Z"
+    },
+    {
+      "id": "CR-1097",
+      "riderId": "helmet-01",
+      "lat": 18.4935,
+      "lng": 73.8915,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Wanawadi, Pune, Maharashtra",
+      "time": "2026-09-28T11:38:07.576Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T11:41:11.834Z"
+    },
+    {
+      "id": "CR-1096",
+      "riderId": "helmet-01",
+      "lat": 18.4985,
+      "lng": 73.8705,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Mukund Nagar, Pune, Maharashtra",
+      "time": "2026-09-28T11:38:05.643Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T11:41:15.934Z"
+    },
+    {
+      "id": "CR-1095",
+      "riderId": "helmet-01",
+      "lat": 18.4845,
+      "lng": 73.8435,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Sahakar Nagar, Pune, Maharashtra",
+      "time": "2026-09-28T11:23:11.172Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-28T11:26:33.145Z",
+      "cancelledAt": "2026-09-28T11:26:33.145Z"
+    },
+    {
+      "id": "CR-1094",
+      "riderId": "helmet-01",
+      "lat": 18.5285,
+      "lng": 73.8865,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Richardson Road, Ghorpuri, Pune, Maharashtra",
+      "time": "2026-09-28T11:15:53.518Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T11:26:02.218Z"
+    },
+    {
+      "id": "CR-1093",
+      "riderId": "helmet-01",
+      "lat": 18.5005,
+      "lng": 73.8455,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Sinhagad Road, Dattawadi, Pune, Maharashtra",
+      "time": "2026-09-28T11:10:56.632Z",
+      "status": "cancelled",
+      "helpRequested": true,
+      "helpRequestedAt": "2026-09-28T11:11:06.867Z",
+      "statusChangedAt": "2026-09-28T11:12:07.563Z",
+      "cancelledAt": "2026-09-28T11:12:07.563Z",
+      "hideCancelledDot": true
+    },
+    {
+      "id": "CR-1092",
+      "riderId": "helmet-01",
+      "lat": 18.4855,
+      "lng": 73.8175,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Mavale vasti, Anandnagar, Maharashtra",
+      "time": "2026-09-28T10:56:56.274Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T11:13:17.838Z"
+    },
+    {
+      "id": "CR-1091",
+      "riderId": "helmet-01",
+      "lat": 18.5615,
+      "lng": 73.8435,
+      "zone": "Zone A — North Pune Precinct",
+      "zoneId": "A",
+      "location": "Mandalay Lines, Khadki, Maharashtra",
+      "time": "2026-09-28T10:56:19.923Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T10:56:52.493Z"
+    },
+    {
+      "id": "CR-1090",
+      "riderId": "helmet-01",
+      "lat": 18.5145,
+      "lng": 73.8105,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Pune, Maharashtra",
+      "time": "2026-09-28T10:51:46.853Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-28T10:51:49.027Z",
+      "cancelledAt": "2026-09-28T10:51:49.027Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1089",
+      "riderId": "helmet-01",
+      "lat": 18.4945,
+      "lng": 73.8545,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Shiv Darshan Road, Swargate, Pune, Maharashtra",
+      "time": "2026-09-28T10:51:25.932Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-28T10:51:32.749Z",
+      "cancelledAt": "2026-09-28T10:51:32.749Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1088",
+      "riderId": "helmet-01",
+      "lat": 18.4755,
+      "lng": 73.8895,
+      "zone": "Zone C — South Pune Precinct",
+      "zoneId": "C",
+      "location": "Kondhwa, Pune, Maharashtra",
+      "time": "2026-09-28T10:45:54.093Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-28T10:46:04.795Z",
+      "cancelledAt": "2026-09-28T10:46:04.795Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1087",
+      "riderId": "helmet-01",
+      "lat": 18.4795,
+      "lng": 73.8475,
+      "zone": "Zone C — South Pune Precinct",
+      "zoneId": "C",
+      "location": "18.47950, 73.84750",
+      "time": "2026-09-28T06:33:28.567Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T10:45:22.889Z"
+    },
+    {
+      "id": "CR-1086",
+      "riderId": "helmet-01",
+      "lat": 18.4885,
+      "lng": 73.8385,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "18.48850, 73.83850",
+      "time": "2026-09-28T06:33:18.968Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T06:34:09.229Z"
+    },
+    {
+      "id": "CR-1085",
+      "riderId": "helmet-01",
+      "lat": 18.5585,
+      "lng": 73.8185,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "18.55850, 73.81850",
+      "time": "2026-09-28T06:27:05.029Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T06:29:14.506Z"
+    },
+    {
+      "id": "CR-1084",
+      "riderId": "helmet-01",
+      "lat": 18.5495,
+      "lng": 73.8885,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "18.54950, 73.88850",
+      "time": "2026-09-28T06:26:51.825Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-28T06:26:55.537Z",
+      "cancelledAt": "2026-09-28T06:26:55.537Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1083",
+      "riderId": "helmet-01",
+      "lat": 18.4825,
+      "lng": 73.9055,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "18.48250, 73.90550",
+      "time": "2026-09-28T06:26:38.102Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-28T06:29:08.846Z"
+    },
+    {
+      "id": "CR-1082",
+      "riderId": "helmet-01",
+      "lat": 18.5215,
+      "lng": 73.8135,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Vishwashanti Marg, Erandwane, Pune, Maharashtra",
+      "time": "2026-09-27T22:26:10.927Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T22:28:06.223Z"
+    },
+    {
+      "id": "CR-1081",
+      "riderId": "helmet-01",
+      "lat": 18.4835,
+      "lng": 73.9025,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Wanawadi, Pune, Maharashtra",
+      "time": "2026-09-27T22:25:36.719Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:25:44.624Z",
+      "cancelledAt": "2026-09-27T22:25:44.624Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1080",
+      "riderId": "helmet-01",
+      "lat": 18.5445,
+      "lng": 73.8185,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Abhimanshree Roads 5 and 6, Aundh, Pune, Maharashtra",
+      "time": "2026-09-27T22:25:18.901Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:25:34.081Z",
+      "cancelledAt": "2026-09-27T22:25:34.081Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1079",
+      "riderId": "helmet-01",
+      "lat": 18.5215,
+      "lng": 73.8305,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Senapati Bapat Marg, Model Colony, Pune, Maharashtra",
+      "time": "2026-09-27T22:22:18.065Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:22:30.515Z",
+      "cancelledAt": "2026-09-27T22:22:30.515Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1078",
+      "riderId": "helmet-01",
+      "lat": 18.5235,
+      "lng": 73.8315,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Green Hills NGO Road, Model Colony, Pune, Maharashtra",
+      "time": "2026-09-27T22:20:59.730Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:21:06.494Z",
+      "cancelledAt": "2026-09-27T22:21:06.494Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1077",
+      "riderId": "helmet-01",
+      "lat": 18.5415,
+      "lng": 73.9035,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Aga Khan Bridge, Kalyani Nagar, Maharashtra",
+      "time": "2026-09-27T22:20:42.538Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:20:48.893Z",
+      "cancelledAt": "2026-09-27T22:20:48.893Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1076",
+      "riderId": "helmet-01",
+      "lat": 18.4735,
+      "lng": 73.8595,
+      "zone": "Zone C — South Pune Precinct",
+      "zoneId": "C",
+      "location": "Panchavati, Pune, Maharashtra",
+      "time": "2026-09-27T22:18:31.464Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:18:35.817Z",
+      "cancelledAt": "2026-09-27T22:18:35.817Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1075",
+      "riderId": "helmet-01",
+      "lat": 18.4745,
+      "lng": 73.9015,
+      "zone": "Zone C — South Pune Precinct",
+      "zoneId": "C",
+      "location": "NIBM Road, Kondhwa, Pune, Maharashtra",
+      "time": "2026-09-27T22:16:03.491Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:16:07.872Z",
+      "cancelledAt": "2026-09-27T22:16:07.872Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1074",
+      "riderId": "helmet-01",
+      "lat": 18.4745,
+      "lng": 73.8215,
+      "zone": "Zone C — South Pune Precinct",
+      "zoneId": "C",
+      "location": "Manik Baug, Anandnagar, Maharashtra",
+      "time": "2026-09-27T22:14:51.175Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:14:56.002Z",
+      "cancelledAt": "2026-09-27T22:14:56.002Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1073",
+      "riderId": "helmet-01",
+      "lat": 18.4815,
+      "lng": 73.9015,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Salunkhe Vihar Road, Kondhwa, Pune, Maharashtra",
+      "time": "2026-09-27T22:14:19.882Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:14:25.413Z",
+      "cancelledAt": "2026-09-27T22:14:25.413Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1072",
+      "riderId": "helmet-01",
+      "lat": 18.5055,
+      "lng": 73.9025,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Fatima Nagar, Pune, Maharashtra",
+      "time": "2026-09-27T22:12:28.772Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T22:13:44.147Z"
+    },
+    {
+      "id": "CR-1071",
+      "riderId": "helmet-01",
+      "lat": 18.5115,
+      "lng": 73.8825,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Pune Cantonment, Pune, Maharashtra",
+      "time": "2026-09-27T22:08:13.483Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T22:08:23.352Z",
+      "cancelledAt": "2026-09-27T22:08:23.352Z",
+      "hideCancelledDot": true
+    },
+    {
+      "id": "CR-1070",
+      "riderId": "helmet-01",
+      "lat": 18.5545,
+      "lng": 73.8105,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Gulmohar Park Lane Number 1, Aundh, Pune, Maharashtra",
+      "time": "2026-09-27T21:58:32.784Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T21:58:51.489Z",
+      "cancelledAt": "2026-09-27T21:58:51.489Z",
+      "suppressedFromDispatch": true
+    },
+    {
+      "id": "CR-1069",
+      "riderId": "helmet-01",
+      "lat": 18.5055,
+      "lng": 73.8635,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Savitribai Phule Path, Swargate, Pune, Maharashtra",
+      "time": "2026-09-27T21:52:57.118Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T21:53:53.316Z"
+    },
+    {
+      "id": "CR-1068",
+      "riderId": "helmet-01",
+      "lat": 18.5685,
+      "lng": 73.8235,
+      "zone": "Zone A — North Pune Precinct",
+      "zoneId": "A",
+      "location": "Old Sangvi, Pimpri-Chinchwad, Maharashtra",
+      "time": "2026-09-27T20:33:26.203Z",
+      "status": "cancelled",
+      "statusChangedAt": "2026-09-27T20:33:32.839Z",
+      "cancelledAt": "2026-09-27T20:33:32.839Z"
+    },
+    {
+      "id": "CR-1067",
+      "riderId": "helmet-01",
+      "lat": 18.5475,
+      "lng": 73.8885,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Ward 14, Pune, Maharashtra",
+      "time": "2026-09-27T20:27:20.808Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T20:27:54.244Z"
+    },
+    {
+      "id": "CR-1066",
+      "riderId": "helmet-01",
+      "lat": 18.5475,
+      "lng": 73.8175,
+      "zone": "Zone B — Central Pune Precinct",
+      "zoneId": "B",
+      "location": "Gopal Hari Deshmukh Marg, Aundh, Pune, Maharashtra",
+      "time": "2026-09-27T20:26:42.411Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T20:28:01.108Z"
+    },
+    {
+      "id": "CR-1065",
+      "riderId": "helmet-01",
+      "lat": 28.569,
+      "lng": 76.958,
+      "zone": "Outside Pune response area",
+      "zoneId": "OUT",
+      "location": "Delhi",
+      "time": "2026-09-27T20:15:35.590Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T20:21:27.465Z"
+    },
+    {
+      "id": "CR-1064",
+      "riderId": "helmet-01",
+      "lat": 28.58,
+      "lng": 76.992,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Shyam Vihar, Delhi",
+      "time": "2026-09-27T19:46:56.500Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T19:53:53.185Z"
+    },
+    {
+      "id": "CR-1063",
+      "riderId": "helmet-01",
+      "lat": 28.56,
+      "lng": 76.975,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Delhi",
+      "time": "2026-09-27T19:37:38.552Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T19:37:52.926Z"
+    },
+    {
+      "id": "CR-1062",
+      "riderId": "helmet-01",
+      "lat": 28.613,
+      "lng": 77.039,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Azad Hind Fauj Marg, Nawada, Dwarka, Delhi",
+      "time": "2026-09-27T19:36:49.596Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T19:37:27.530Z"
+    },
+    {
+      "id": "CR-1061",
+      "riderId": "helmet-01",
+      "lat": 28.584,
+      "lng": 77.011,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Goyla Khurd, Delhi",
+      "time": "2026-09-27T19:08:42.471Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T19:09:17.062Z"
+    },
+    {
+      "id": "CR-1060",
+      "riderId": "helmet-01",
+      "lat": 28.543,
+      "lng": 76.991,
+      "zone": "Zone B — Central Precinct",
+      "zoneId": "B",
+      "location": "Najafgarh, Delhi",
+      "time": "2026-09-27T18:49:54.443Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T19:09:20.028Z"
+    },
+    {
+      "id": "CR-1059",
+      "riderId": "helmet-01",
+      "lat": 28.564,
+      "lng": 76.973,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Delhi",
+      "time": "2026-09-27T18:42:55.539Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T18:46:51.197Z"
+    },
+    {
+      "id": "CR-1058",
+      "riderId": "helmet-01",
+      "lat": 28.59,
+      "lng": 77.026,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Road 201, Najafgarh, Delhi",
+      "time": "2026-09-27T18:41:59.608Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T18:46:43.259Z"
+    },
+    {
+      "id": "CR-1057",
+      "riderId": "helmet-01",
+      "lat": 28.603,
+      "lng": 77.047,
+      "zone": "Zone A — North Precinct",
+      "zoneId": "A",
+      "location": "Dwarka, Delhi",
+      "time": "2026-09-27T18:25:48.390Z",
+      "status": "completed",
+      "statusChangedAt": "2026-09-27T18:46:46.794Z"
+    }
+  ]
+}

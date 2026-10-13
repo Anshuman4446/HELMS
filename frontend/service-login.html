@@ -80,3 +80,86 @@ document.getElementById('loginForm').addEventListener('submit', async (e)=>{
 </body>
 </html>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HELMS — Emergency Services Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --navy:#0F2A4A; --navy-dark:#0A1D33; --gold:#C99A2E; --bg:#F3F5F8; --line:#E1E6ED; --muted:#5B6B7D; --red:#B3261E; --red-bg:#FCEAE9; }
+  *{box-sizing:border-box;}
+  body{margin:0; min-height:100vh; background:var(--bg); font-family:'IBM Plex Sans',sans-serif; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .card{max-width:380px; width:100%; background:#fff; border:1px solid var(--line); border-radius:12px; padding:32px 28px;}
+  .brand-logo{display:block;width:min(260px,80vw);height:auto;margin:0 auto 18px;}
+  .seal{width:44px; height:44px; border-radius:50%; background:var(--navy); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.2rem; margin:0 auto 14px;}
+  h1{font-size:1.15rem; color:var(--navy); text-align:center; margin:0 0 4px;}
+  p.sub{color:var(--muted); text-align:center; margin:0 0 24px; font-size:0.85rem;}
+  label{display:block; font-size:0.78rem; color:var(--muted); margin-bottom:6px; font-weight:500;}
+  input{width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:7px; font:inherit; margin-bottom:16px;}
+  input:focus{outline:2px solid var(--navy); outline-offset:1px;}
+  button{width:100%; padding:12px; border:none; border-radius:7px; background:var(--navy); color:#fff; font-weight:600; font-size:0.95rem; cursor:pointer;}
+  button:hover{background:var(--navy-dark);}
+  .error{background:var(--red-bg); color:var(--red); font-size:0.8rem; padding:9px 11px; border-radius:6px; margin-bottom:14px; display:none;}
+  .back{display:block; text-align:center; margin-top:16px; font-size:0.8rem; color:var(--muted); text-decoration:none;}
+  .demo-note{font-size:0.7rem; color:#A8B0BA; text-align:center; margin-top:18px; font-family:'IBM Plex Mono',monospace; line-height:1.5;}
+</style>
+<script src="brand-migration.js"></script>
+</head>
+<body>
+<div class="card">
+  <img class="brand-logo" src="helms-logo.svg" alt="HELMS — Helmet Emergency &amp; Monitoring System">
+  <h1>HELMS Emergency Services Login</h1>
+  <p class="sub">Authorized dispatch personnel only</p>
+  <div class="error" id="errorMsg">Invalid username or password.</div>
+  <form id="loginForm">
+    <label for="username">Username</label>
+    <input id="username" type="text" autocomplete="username" required>
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <label for="backend">Backend address</label>
+    <input id="backend" type="url" inputmode="url" required>
+    <button type="submit">Sign In</button>
+  </form>
+  <a class="back" href="authority-portal.html">← Back to authority portal</a>
+  
+</div>
+<script>
+const params = new URLSearchParams(location.search);
+const initialBackend = params.get('api') || (location.hostname ? 'http://' + location.hostname + ':3000' : localStorage.getItem('helms-service-api') || 'http://172.27.230.228:3000');
+document.getElementById('backend').value = initialBackend;
+function validBackend(value){try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)&&Boolean(url.hostname)&&!url.username&&!url.password;}catch(error){return false;}}
+document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const backend = document.getElementById('backend').value.trim().replace(/\/$/, '');
+  if(!validBackend(backend)){errorMsg.textContent='Enter a complete backend address, such as http://172.27.230.228:3000.';errorMsg.style.display='block';return;}
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const errorMsg = document.getElementById('errorMsg');
+  try{
+    const res = await fetch(backend + '/service-login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ username, password })
+    });
+    if(res.ok){
+      const loginData = await res.json();
+      localStorage.setItem('helms-service-api', backend);
+      sessionStorage.setItem('helms-service-auth', 'true');
+      sessionStorage.setItem('helms-service-token', loginData.token || '');
+      const nextPage = ['dashboard-live.html','police-dashboard.html'].includes(params.get('next')) ? params.get('next') : 'dashboard-live.html';
+      window.location.href = nextPage + '?api=' + encodeURIComponent(backend);
+    } else {
+      errorMsg.style.display = 'block';
+    }
+  }catch(err){
+    errorMsg.textContent = 'Cannot reach ' + backend + '. Check the backend address and make sure the backend is running.';
+    errorMsg.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
+

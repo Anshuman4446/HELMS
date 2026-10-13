@@ -8,4 +8,16 @@
     { "source": "/hospital-resources", "destination": "/hospital-resources.html" },
     { "source": "/police-dashboard", "destination": "/police-dashboard.html" }
   ]
+=======
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/rider", "destination": "/rider.html" },
+    { "source": "/service-provider", "destination": "/authority-portal.html" },
+    { "source": "/authority", "destination": "/authority-portal.html" },
+    { "source": "/hospital-resources", "destination": "/hospital-resources.html" },
+    { "source": "/police-dashboard", "destination": "/police-dashboard.html" }
+  ]
+
 }

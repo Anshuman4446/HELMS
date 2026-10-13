@@ -54,3 +54,60 @@
 </body>
 </html>
 
+=======
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HELMS | Authority Portal</title>
+  <style>
+    :root{--navy:#102b3f;--navy2:#183d52;--teal:#20b58f;--gold:#edbd55;--ink:#163546;--muted:#667d88;--paper:#f4f7f6;--line:#d9e4e3;--white:#fff}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}
+    .top{height:82px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,28px);border-bottom:1px solid #ffffff20}
+    .brand{display:flex;align-items:center;gap:13px}.brand img{display:block;width:185px;height:auto}.mark{width:38px;height:38px;border-radius:13px 13px 13px 5px;background:linear-gradient(145deg,#35d0a7,#138b75);display:grid;place-items:center;color:var(--navy);font-size:20px;letter-spacing:0;font-weight:900;box-shadow:0 0 0 4px #ffffff0c}
+    .top-right{display:flex;align-items:center;gap:12px;color:#d0e0e4;font-size:13px}.lock{border:1px solid #698290;border-radius:99px;padding:9px 14px;display:flex;gap:8px;align-items:center}.dot{width:7px;height:7px;background:var(--teal);border-radius:50%;box-shadow:0 0 9px var(--teal)}
+    main{max-width:1180px;margin:auto;padding:52px 28px 66px}.eyebrow{color:#128d72;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";height:2px;width:28px;background:var(--teal)}
+    .hero{display:grid;grid-template-columns:1.07fr .93fr;gap:50px;align-items:center;padding:25px 0 45px}.copy h1{font-size:clamp(42px,5vw,66px);line-height:1.02;letter-spacing:-.045em;color:var(--navy);margin:19px 0 20px;max-width:650px}.copy h1 span{color:#189877}.copy p{font-size:18px;line-height:1.7;color:var(--muted);max-width:610px;margin:0 0 27px}.actions{display:flex;gap:13px;align-items:center;flex-wrap:wrap}.button{height:52px;padding:0 22px;border:0;border-radius:8px;background:var(--teal);color:#092e34;font-weight:800;font-size:15px;display:inline-flex;align-items:center;gap:12px;text-decoration:none;box-shadow:0 8px 18px #20b58f36}.button span{font-size:20px;line-height:0}.text-link{color:var(--navy);text-decoration:none;font-weight:700;padding:12px 14px}.micro{margin-top:18px;color:#7b9098;font-size:12px}
+    .visual{position:relative;min-height:348px;border-radius:20px;background:#e8efec;border:1px solid var(--line);overflow:hidden;padding:24px;box-shadow:0 24px 65px #183d5212}.map{position:absolute;inset:0;background-image:linear-gradient(90deg,transparent 48%,#fff 48%,#fff 51%,transparent 51%),linear-gradient(0deg,transparent 48%,#fff 48%,#fff 51%,transparent 51%);background-size:130px 105px;opacity:.8}.road{position:absolute;background:#fff;border:1px solid #cfddda;border-radius:99px;transform:rotate(-24deg)}.r1{width:520px;height:18px;left:-48px;top:157px}.r2{width:370px;height:16px;left:195px;top:65px;transform:rotate(66deg)}.r3{width:410px;height:13px;left:38px;top:286px;transform:rotate(12deg)}.park{position:absolute;right:30px;top:27px;width:95px;height:66px;background:#cfe5d5;border-radius:18px 30px 12px 25px}.place{position:absolute;font-size:10px;font-weight:700;color:#67808a;letter-spacing:.04em}.p1{left:31px;top:58px}.p2{left:203px;top:211px}.p3{right:30px;bottom:37px}.cross{position:absolute;left:47%;top:43%;width:15px;height:15px;border-radius:50%;background:var(--navy);border:4px solid white;box-shadow:0 0 0 7px #102b3f1a}.response{position:absolute;left:65%;top:66%;width:12px;height:12px;border-radius:50%;background:var(--teal);border:3px solid white;box-shadow:0 0 0 5px #20b58f26}.route{position:absolute;width:142px;height:75px;left:49%;top:49%;border-right:3px dashed #17977b;border-bottom:3px dashed #17977b;border-radius:0 0 34px 0;transform:rotate(-6deg)}.map-label{position:absolute;top:20px;left:20px;background:#fff;padding:10px 13px;border:1px solid var(--line);border-radius:8px;color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.1em}.map-caption{position:absolute;left:22px;bottom:19px;color:#647d86;background:#ffffffdc;padding:9px 11px;border-radius:6px;font-size:11px}
+    .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:12px;background:white;overflow:hidden}.step{padding:24px 26px;display:flex;gap:16px;align-items:flex-start}.step+.step{border-left:1px solid var(--line)}.num{width:33px;height:33px;flex:0 0 33px;border-radius:10px;background:#e2f4ef;color:#128d72;font-size:13px;font-weight:900;display:grid;place-items:center}.step b{display:block;color:var(--navy);font-size:15px;margin:2px 0 6px}.step p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+    .portal-links{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}.portal-card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:18px}.portal-card b{display:block;color:var(--navy);font-size:15px;margin-bottom:6px}.portal-card p{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 12px}.portal-card a{color:#128d72;font-size:12px;font-weight:800;text-decoration:none}.portal-card a:hover{text-decoration:underline}@media(max-width:650px){.portal-links{grid-template-columns:1fr}}
+    .note{margin-top:20px;display:flex;gap:11px;align-items:flex-start;padding:14px 17px;border-radius:8px;background:#fff7e5;border:1px solid #f1dfb2;color:#6d5c36;font-size:12px;line-height:1.5}.note strong{color:#55451f;white-space:nowrap}.foot{margin-top:29px;display:flex;justify-content:space-between;color:#84959b;font-size:11px}.foot a{color:#607985;text-decoration:none}
+    @media(max-width:850px){.hero{grid-template-columns:1fr;gap:25px;padding-top:18px}.visual{min-height:300px}.strip{grid-template-columns:1fr}.step+.step{border-left:0;border-top:1px solid var(--line)}.top{height:72px}.top-right .lock{display:none}}
+    @media(max-width:520px){main{padding:35px 18px 45px}.top{padding:0 18px}.brand{font-size:16px}.top-right{font-size:11px}.copy p{font-size:16px}.actions{align-items:stretch}.button{justify-content:center;width:100%}.text-link{padding-left:0}}
+  </style>
+<script src="brand-migration.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><img src="helms-logo-light.svg" alt="HELMS — Helmet Emergency &amp; Monitoring System"></div>
+    <div class="top-right"><span>Emergency coordination</span><div class="lock"><i class="dot"></i> Authorized personnel</div></div>
+  </header>
+  <main>
+    <div class="eyebrow">Authority portal</div>
+    <section class="hero">
+      <div class="copy">
+        <h1>Clear decisions.<br><span>Coordinated response.</span></h1>
+        <p>Review helmet emergency alerts, confirm incident details, and coordinate the next response from one secure operations console.</p>
+        <div class="actions"><a class="button" href="service-login.html">Authority sign in <span>→</span></a><a class="text-link" href="#how-it-works">How the system works&nbsp; ↗</a></div>
+        <div class="micro">For authorized emergency-service personnel</div>
+      </div>
+      <div class="visual" aria-label="Illustrative map and response route">
+        <div class="map"></div><div class="road r1"></div><div class="road r2"></div><div class="road r3"></div><div class="park"></div>
+        <div class="place p1">NORTH PRECINCT</div><div class="place p2">CENTRAL DISTRICT</div><div class="place p3">CITY HOSPITAL</div>
+        <div class="route"></div><div class="cross"></div><div class="response"></div>
+        <div class="map-label">RESPONSE OVERVIEW</div><div class="map-caption">Illustrative interface preview · no live incidents</div>
+      </div>
+    </section>
+    <section class="strip" id="how-it-works">
+      <div class="step"><div class="num">01</div><div><b>Review the alert</b><p>See incident details and location after the user check-in window.</p></div></div>
+      <div class="step"><div class="num">02</div><div><b>Confirm the situation</b><p>Contact the Helmet User and assess the report before acting.</p></div></div>
+      <div class="step"><div class="num">03</div><div><b>Coordinate a response</b><p>Choose the appropriate next action from the dispatch console.</p></div></div>
+    </section>
+    <section class="portal-links" aria-label="Authority tools"><article class="portal-card"><b>Hospital fleet portal</b><p>Hospital staff manage ambulance availability, vehicle records, and crew contacts.</p><a href="hospital-resources.html">Open hospital resource management →</a></article><article class="portal-card"><b>Police coordination view</b><p>Read-only access to assigned ambulance routes and hospital contact details. Police unit and officer records are not collected.</p><a href="police-dashboard.html">Open police coordination view →</a></article></section>
+    <div class="note"><strong>Prototype notice</strong><span>This project demonstrates a simulated dispatch workflow. Responder locations, routes, movement, availability, and arrival estimates are illustrative and are not connected to real emergency services.</span></div>
+    <footer class="foot"><span>HELMS · Helmet Emergency &amp; Monitoring System</span><a href="service-login.html">Authority access</a></footer>
+  </main>
+</body>
+</html>
+
